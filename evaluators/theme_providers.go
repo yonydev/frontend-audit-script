@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"sync"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
 )
@@ -17,33 +18,60 @@ func EvalThemeProviders(paths []string) (Evaluation, error) {
 	evalName := ">>> Theme Provider Check\n"
 	evalDesc := "Checking for theme provider components in files...\n"
 
+	type result struct {
+		path string
+		err  error
+	}
+
+	results := make(chan result, len(paths))
+	var wg sync.WaitGroup
+
 	for _, path := range paths {
-		file, err := os.Open(path)
-		if err != nil {
-			return Evaluation{}, fmt.Errorf("failed to open file: %s %v", path, err)
-		}
-		defer file.Close()
-
-		scanner := bufio.NewScanner(file)
-		buf := make([]byte, 64*1024)   // 64KB buffer
-		scanner.Buffer(buf, 1024*1024) // Increase buffer size to 1MB
-
-		if len(buf) > 1024*1024 {
-			panic("Buffer size is too large, it exceeds 1MB")
-		}
-
-		for scanner.Scan() {
-			line := scanner.Text()
-			if tagPattern.MatchString(line) {
-				filesUsingThemeProvider = append(filesUsingThemeProvider, path)
-				break
+		wg.Add(1)
+		go func(path string) {
+			defer wg.Done()
+			file, err := os.Open(path)
+			if err != nil {
+				results <- result{path: path, err: err}
+				return
 			}
-		}
+			defer file.Close()
 
-		if err := scanner.Err(); err != nil {
-			return Evaluation{}, fmt.Errorf("error reading file %s: %v", err, path)
-		}
+			scanner := bufio.NewScanner(file)
+			buf := make([]byte, 64*1024)   // 64KB buffer
+			scanner.Buffer(buf, 1024*1024) // Increase buffer size to 1MB
 
+			if len(buf) > 1024*1024 {
+				results <- result{path: path, err: fmt.Errorf("buffer size is too large, it exceeds 1MB")}
+				return
+			}
+
+			for scanner.Scan() {
+				line := scanner.Text()
+				if tagPattern.MatchString(line) {
+					filesUsingThemeProvider = append(filesUsingThemeProvider, path)
+					break
+				}
+			}
+
+			if err := scanner.Err(); err != nil {
+				results <- result{path: path, err: fmt.Errorf("error reading file %s: %v", path, err)}
+				return
+			}
+
+			results <- result{path: path, err: nil}
+		}(path)
+	}
+
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	for res := range results {
+		if res.err != nil {
+			return Evaluation{}, res.err
+		}
 	}
 
 	if len(filesUsingThemeProvider) == 0 {
