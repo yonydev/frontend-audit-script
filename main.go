@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
 
 	"github.com/fatih/color"
 	"github.com/yonydev/frontend-audit-script/evaluators"
@@ -85,11 +86,13 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 
 	}
 
-	if filepath.Ext(path) == ".js" || filepath.Ext(path) == ".jsx" || filepath.Ext(path) == ".ts" || filepath.Ext(path) == ".tsx" {
-		frontendFiles = append(frontendFiles, path)
+	if matchedFrontendFiles, _ := regexp.MatchString(`\.(js|jsx|ts|tsx)$`, path); matchedFrontendFiles {
+		if !regexp.MustCompile(`\.(spec|specs|test|tests|story)\.(js|jsx|ts|tsx)$`).MatchString(path) {
+			frontendFiles = append(frontendFiles, path)
+		}
 	}
 
-	if filepath.Ext(path) == ".jpg" || filepath.Ext(path) == ".jpeg" || filepath.Ext(path) == ".png" || filepath.Ext(path) == ".gif" || filepath.Ext(path) == ".svg" || filepath.Ext(path) == ".webp" {
+	if matchedAssetsFiles, _ := regexp.MatchString(`\.(jpg|jpeg|png|gif|svg|webp)$`, path); matchedAssetsFiles {
 		assetsFiles = append(assetsFiles, path)
 	}
 
