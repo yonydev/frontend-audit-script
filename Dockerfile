@@ -15,7 +15,7 @@
 # ENTRYPOINT ["/bin/action"]
 #
 
-FROM golang:1.24 as builder
+FROM golang:1.24 AS builder
 
 ENV GO111MODULE=on \
   CGO_ENABLED=0 \
@@ -23,7 +23,7 @@ ENV GO111MODULE=on \
   GOARCH=amd64
 
 RUN apt-get -qq update && \
-  apt-get -qq -y install upx
+  apt-get -yqq install upx
 
 WORKDIR /src
 COPY . .
