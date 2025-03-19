@@ -126,11 +126,12 @@ func EvalWebFonts(paths []string) (Evaluation, error) {
 	}
 
 	return NewEvaluation(
-		evalName,
-		evalDesc,
-		0,
-		0,
-		0,
-		messages,
-	), nil
+			evalName,
+			evalDesc,
+			0,
+			0,
+			0,
+			messages,
+		),
+		nil
 }
