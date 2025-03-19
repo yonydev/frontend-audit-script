@@ -18,6 +18,7 @@ var (
 	packageJSONContent string
 	frontendFiles      []string
 	assetsFiles        []string
+	stylesFiles        []string
 )
 
 func main() {
@@ -54,7 +55,14 @@ func main() {
 		// assetsEvaluation.Score,
 	)
 
-	evaluators.EvalAssets(assetsFiles)
+	webFontsEvaluation, _ := evaluators.EvalWebFonts(stylesFiles)
+	fmt.Printf(
+		"%s%s%v\n",
+		webFontsEvaluation.Name,
+		webFontsEvaluation.Description,
+		utils.MapMessagePrinter(webFontsEvaluation.Messages),
+	// webFontsEvaluation.Score,
+	)
 }
 
 func walkDirFunc(path string, d fs.DirEntry, err error) error {
@@ -101,6 +109,10 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 
 	if matchedAssetsFiles, _ := regexp.MatchString(`\.(jpg|jpeg|png|gif|svg|webp)$`, path); matchedAssetsFiles {
 		assetsFiles = append(assetsFiles, path)
+	}
+
+	if matchedStylesFiles, _ := regexp.MatchString(`\.(css|scss|sass|less|html)$`, path); matchedStylesFiles {
+		stylesFiles = append(stylesFiles, path)
 	}
 
 	return nil
