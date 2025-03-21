@@ -20,7 +20,7 @@ func EvalAssets(paths []string) (Evaluation, error) {
 	var criticalAssetsToOptimize []string
 	var messages []string
 
-	evalName := ">>> Assets Optimization Check\n"
+	evalName := "\n>>> Assets Optimization Check\n"
 	evalDesc := "Looking for Checking for .jpg, .jpeg, .png, .gif, .svg, .webp files..."
 
 	if len(paths) == 0 {

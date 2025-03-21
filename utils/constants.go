@@ -5,6 +5,8 @@ var IgnoredDirsAndFiles = map[string]bool{
 	"__mocks__":         true,
 	"__tests__":         true,
 	"__test__":          true,
+	"tests":             true,
+	"test":              true,
 	"dist":              true,
 	"build":             true,
 	"coverage":          true,

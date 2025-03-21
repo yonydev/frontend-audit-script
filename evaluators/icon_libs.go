@@ -61,12 +61,15 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 		)
 	default:
 		score = 50
-		evalMessages = append(evalMessages, fmt.Sprintf(
-			"%d icon libraries found in package.json. Consider using a single icon library for consistent icon usage.\n",
-			foundLibsCount),
+		evalMessages = append(
+			evalMessages,
+			fmt.Sprintf(
+				"%s icon libraries found in package.json. Consider using a single icon library for consistent icon usage.\n",
+				c.InfoFgBold(foundLibsCount),
+			),
 		)
 		for _, lib := range foundIconsLibs {
-			evalMessages = append(evalMessages, fmt.Sprintf("- %s\n", lib))
+			evalMessages = append(evalMessages, fmt.Sprintf("- %s", c.WarningFgBold(lib)))
 		}
 	}
 

@@ -46,11 +46,13 @@ func EvalMuiExtraLibs(content *string) (Evaluation, error) {
 			c.SuccessFg("No MUI extra libraries found. Nice, keep it up! 🦾, keep it clean! 🧹"),
 		)
 	} else {
-		message := fmt.Sprintf(
-			"Found %s in package.json.",
-			c.InfoFgBold(strings.Join(foundLibs, ", ")),
+		messages = append(
+			messages,
+			fmt.Sprintf(
+				"Found %s in package.json.\n",
+				c.InfoFgBold(strings.Join(foundLibs, ", ")),
+			),
 		)
-		messages = append(messages, message)
 	}
 
 	return NewEvaluation(
