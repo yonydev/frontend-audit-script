@@ -41,11 +41,13 @@ var CommonIconLibs = []string{
 	"lucide-react",
 }
 
+var MuiExtraLibs = []string{"@mui/lab", "@mui/system"}
+
 var AssetsExtensions = []string{
-  ".jpg",
-  ".jpeg",
-  ".png",
-  ".gif",
-  ".svg",
-  ".webp",
+	".jpg",
+	".jpeg",
+	".png",
+	".gif",
+	".svg",
+	".webp",
 }
