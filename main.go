@@ -8,7 +8,7 @@ import (
 	"regexp"
 
 	"github.com/fatih/color"
-	// "github.com/sethvargo/go-githubactions"
+	"github.com/sethvargo/go-githubactions"
 	"github.com/yonydev/frontend-audit-script/evaluators"
 	"github.com/yonydev/frontend-audit-script/readers"
 	"github.com/yonydev/frontend-audit-script/utils"
@@ -23,6 +23,10 @@ var (
 
 func main() {
 	color.NoColor = false
+
+  githubCtx, _ := githubactions.New().Context()
+
+  println(githubCtx)
 
 	// fruit := githubactions.GetInput("fruit")
 	// if fruit == "" {
