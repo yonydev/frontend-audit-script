@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"os"
@@ -25,8 +26,10 @@ func main() {
 	color.NoColor = false
 
   githubCtx, _ := githubactions.New().Context()
+  data, _ := json.Marshal(githubCtx)
 
-  fmt.Println(githubCtx)
+  fmt.Println(string(data))
+
   githubactions.AddStepSummary("## Hello World")
 
 	// fruit := githubactions.GetInput("fruit")
