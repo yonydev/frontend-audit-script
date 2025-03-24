@@ -27,6 +27,7 @@ func main() {
   githubCtx, _ := githubactions.New().Context()
 
   fmt.Println(githubCtx)
+  githubactions.AddStepSummary("## Hello World")
 
 	// fruit := githubactions.GetInput("fruit")
 	// if fruit == "" {
@@ -90,7 +91,7 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 	}
 
 	if fileName == "package.json" {
-		packageJSONContent = readers.PackageJSONReader(&path)
+		packageJSONContent = readers.FileReader(&path)
 
 		reactEvaluation, _ := evaluators.EvalReactVersion(&packageJSONContent)
 		fmt.Printf(
