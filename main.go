@@ -26,7 +26,7 @@ func main() {
 
   githubCtx, _ := githubactions.New().Context()
 
-  println(githubCtx)
+  fmt.Println(githubCtx)
 
 	// fruit := githubactions.GetInput("fruit")
 	// if fruit == "" {
