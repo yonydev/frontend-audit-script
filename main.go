@@ -37,32 +37,39 @@ func main() {
 		panic(walking_directory_err)
 	}
 
-	themeProvidersEvaluation, _ := evaluators.EvalThemeProviders(frontendFiles)
-	fmt.Printf(
-		"%s%s%v\n",
-		themeProvidersEvaluation.Name,
-		themeProvidersEvaluation.Description,
-		utils.MapMessagePrinter(themeProvidersEvaluation.Messages),
-		// themeProvidersEvaluation.Score,
-	)
+	if len(frontendFiles) > 0 {
+		themeProvidersEvaluation, _ := evaluators.EvalThemeProviders(frontendFiles)
+		fmt.Printf(
+			"%s%s%v\n",
+			themeProvidersEvaluation.Name,
+			themeProvidersEvaluation.Description,
+			utils.MapMessagePrinter(themeProvidersEvaluation.Messages),
+			// themeProvidersEvaluation.Score,
+		)
+		webFontsEvaluation, _ := evaluators.EvalWebFonts(stylesFiles)
+		fmt.Printf(
+			"%s%s%v\n",
+			webFontsEvaluation.Name,
+			webFontsEvaluation.Description,
+			utils.MapMessagePrinter(webFontsEvaluation.Messages),
+		// webFontsEvaluation.Score,
+		)
+	} else {
+		fmt.Println("No .js, .jsx, .ts, .tsx files found")
+	}
 
-	assetsEvaluation, _ := evaluators.EvalAssets(assetsFiles)
-	fmt.Printf(
-		"%s%s%v\n",
-		assetsEvaluation.Name,
-		assetsEvaluation.Description,
-		utils.MapMessagePrinter(assetsEvaluation.Messages),
-		// assetsEvaluation.Score,
-	)
-
-	webFontsEvaluation, _ := evaluators.EvalWebFonts(stylesFiles)
-	fmt.Printf(
-		"%s%s%v\n",
-		webFontsEvaluation.Name,
-		webFontsEvaluation.Description,
-		utils.MapMessagePrinter(webFontsEvaluation.Messages),
-	// webFontsEvaluation.Score,
-	)
+	if len(assetsFiles) > 0 {
+		assetsEvaluation, _ := evaluators.EvalAssets(assetsFiles)
+		fmt.Printf(
+			"%s%s%v\n",
+			assetsEvaluation.Name,
+			assetsEvaluation.Description,
+			utils.MapMessagePrinter(assetsEvaluation.Messages),
+			// assetsEvaluation.Score,
+		)
+	} else {
+		fmt.Println("No image assets found")
+	}
 }
 
 func walkDirFunc(path string, d fs.DirEntry, err error) error {
@@ -108,7 +115,7 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 			// muiExtraLibsEvaluation.Score,
 		)
 
-    stylingLibsEvaluation, _ := evaluators.EvalStylingLibs(&packageJSONContent)
+		stylingLibsEvaluation, _ := evaluators.EvalStylingLibs(&packageJSONContent)
 		fmt.Printf(
 			"%s%s%v\n",
 			stylingLibsEvaluation.Name,
