@@ -45,6 +45,16 @@ var CommonIconLibs = []string{
 
 var MuiExtraLibs = []string{"@mui/lab", "@mui/system"}
 
+// Allowed (true) and disallowed (false) styling libraries
+var StylingLibs = map[string]bool{
+	"jss":               false,
+	"react-jss":         false,
+	"styled-components": false,
+	"@emotion/css":      false,
+	"@emotion/react":    true,
+	"@emotion/styled":   true,
+}
+
 var AssetsExtensions = []string{
 	".jpg",
 	".jpeg",
