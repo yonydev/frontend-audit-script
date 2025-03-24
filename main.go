@@ -108,6 +108,15 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 			// muiExtraLibsEvaluation.Score,
 		)
 
+    stylingLibsEvaluation, _ := evaluators.EvalStylingLibs(&packageJSONContent)
+		fmt.Printf(
+			"%s%s%v\n",
+			stylingLibsEvaluation.Name,
+			stylingLibsEvaluation.Description,
+			utils.MapMessagePrinter(stylingLibsEvaluation.Messages),
+			// muiExtraLibsEvaluation.Score,
+		)
+
 	}
 
 	if matchedFrontendFiles, _ := regexp.MatchString(`\.(js|jsx|ts|tsx)$`, path); matchedFrontendFiles {
