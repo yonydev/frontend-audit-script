@@ -6,5 +6,6 @@ type Evaluation struct {
 	Score       int
 	MaxScore    int
 	MinScore    int
+	Weight      float64
 	Messages    []string
 }

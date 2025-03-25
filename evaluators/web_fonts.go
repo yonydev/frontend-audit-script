@@ -131,6 +131,7 @@ func EvalWebFonts(paths []string) (Evaluation, error) {
 			0,
 			0,
 			0,
+			0,
 			messages,
 		),
 		nil

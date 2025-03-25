@@ -28,6 +28,7 @@ func EvalReactVersion(content *string) (Evaluation, error) {
 				0,
 				100,
 				0,
+				0,
 				[]string{c.WarningFg("React dependency not found in package.json")},
 			),
 			nil
@@ -40,6 +41,7 @@ func EvalReactVersion(content *string) (Evaluation, error) {
 				evalDesc,
 				0,
 				100,
+				0,
 				0,
 				[]string{c.WarningFg("React dependency not found in package.json")},
 			),
@@ -92,6 +94,7 @@ func evaluateReactVersion(version int) Evaluation {
 		evalDesc,
 		score,
 		100,
+		0,
 		0,
 		evalMessages,
 	)

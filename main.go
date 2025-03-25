@@ -8,7 +8,6 @@ import (
 	"regexp"
 
 	"github.com/fatih/color"
-	"github.com/sethvargo/go-githubactions"
 	"github.com/yonydev/frontend-audit-script/evaluators"
 	"github.com/yonydev/frontend-audit-script/readers"
 	"github.com/yonydev/frontend-audit-script/utils"
@@ -23,19 +22,6 @@ var (
 
 func main() {
 	color.NoColor = false
-
-  githubCtx, _ := githubactions.New().Context()
-
-  githubactions.AddStepSummary("## Hello World")
-  githubactions.SetEnv("JOB_ENV", "Hello World")
-
-  fmt.Println(githubCtx)
-
-	// fruit := githubactions.GetInput("fruit")
-	// if fruit == "" {
-	// 	githubactions.Fatalf("missing input 'fruit'")
-	// }
-	// githubactions.AddMask(fruit)
 
 	dir, _ := os.Getwd()
 	walking_directory_err := filepath.WalkDir(dir, walkDirFunc)

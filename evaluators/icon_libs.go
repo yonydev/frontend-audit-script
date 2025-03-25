@@ -35,6 +35,7 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 				0,
 				100,
 				0,
+				0,
 				[]string{"No dependencies nor devDependencies found in package.json"}),
 			nil
 	}
@@ -73,5 +74,5 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 		}
 	}
 
-	return NewEvaluation(evalName, evalDesc, score, 0, 0, evalMessages), nil
+	return NewEvaluation(evalName, evalDesc, score, 0, 0, 0, evalMessages), nil
 }
