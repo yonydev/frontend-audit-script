@@ -26,8 +26,10 @@ func main() {
 
   githubCtx, _ := githubactions.New().Context()
 
-  fmt.Println(githubCtx)
   githubactions.AddStepSummary("## Hello World")
+  githubactions.SetEnv("JOB_ENV", "Hello World")
+
+  fmt.Println(githubCtx)
 
 	// fruit := githubactions.GetInput("fruit")
 	// if fruit == "" {
