@@ -18,6 +18,11 @@ func EvalWebFonts(paths []string) (Evaluation, error) {
 	var webFonts []string
 	var filesWithWebFonts []string
 
+	score := 0
+	minScore := 40
+	maxScore := 100
+	weight := 4
+
 	filesWithWebFontsSet := make(map[string]struct{}) // Use a map to avoid duplicates
 	webFontsSet := make(map[string]struct{})          // Use a map to avoid duplicates
 
@@ -109,12 +114,21 @@ func EvalWebFonts(paths []string) (Evaluation, error) {
 		filesWithWebFonts = append(filesWithWebFonts, file)
 	}
 
-	if len(webFontsSet) == 0 {
+	switch len(webFontsSet) {
+	case 0:
+		score = 60
 		messages = append(
 			messages,
 			c.WarningFg("No web fonts found in the project. Consider using system fonts or generic font families."),
 		)
-	} else {
+	case 1:
+		score = maxScore
+		messages = append(
+			messages,
+			c.SuccessFg("Only one web font found in the project. Nice!"),
+		)
+	default:
+		score = minScore
 		messages = append(
 			messages,
 			fmt.Sprintf("Total of %s fonts used in %s files", c.InfoFgBold(len(webFontsSet)), c.InfoFgBold(len(filesWithWebFontsSet))),
@@ -128,10 +142,10 @@ func EvalWebFonts(paths []string) (Evaluation, error) {
 	return NewEvaluation(
 			evalName,
 			evalDesc,
-			0,
-			0,
-			0,
-			0,
+			score,
+			maxScore,
+			minScore,
+			weight,
 			messages,
 		),
 		nil

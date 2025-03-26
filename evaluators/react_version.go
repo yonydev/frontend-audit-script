@@ -16,19 +16,25 @@ var (
 func EvalReactVersion(content *string) (Evaluation, error) {
 	var packageJSON map[string]any
 
+  score := 0
+  minScore := 50
+  maxScore := 100
+  weight := 3
+
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
 		return Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
 	}
 
 	dependencies, found := packageJSON["dependencies"].(map[string]any)
 	if !found {
+    score = minScore
 		return NewEvaluation(
 				evalName,
 				evalDesc,
-				0,
-				100,
-				0,
-				0,
+				score,
+				maxScore,
+				minScore,
+				weight,
 				[]string{c.WarningFg("React dependency not found in package.json")},
 			),
 			nil
@@ -36,13 +42,14 @@ func EvalReactVersion(content *string) (Evaluation, error) {
 
 	reactVersion, found := dependencies["react"].(string)
 	if !found {
+    score = minScore
 		return NewEvaluation(
 				evalName,
 				evalDesc,
-				0,
-				100,
-				0,
-				0,
+				score,
+				maxScore,
+				minScore,
+				weight,
 				[]string{c.WarningFg("React dependency not found in package.json")},
 			),
 			nil
@@ -94,7 +101,7 @@ func evaluateReactVersion(version int) Evaluation {
 		evalDesc,
 		score,
 		100,
-		0,
+		50,
 		0,
 		evalMessages,
 	)

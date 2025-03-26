@@ -17,7 +17,11 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 	evalName := "\n>>> Icon Libraries\n"
 	evalDesc := "Checking for common icon libraries...\n"
 	foundLibsCount := 0
-	score := 100
+
+	score := 0
+	weight := 2
+	maxScore := 100
+	minScore := 40
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
 		return Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
@@ -32,10 +36,10 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 		return NewEvaluation(
 				evalName,
 				evalDesc,
-				0,
-				100,
-				0,
-				0,
+				score,
+				maxScore,
+				minScore,
+				weight,
 				[]string{"No dependencies nor devDependencies found in package.json"}),
 			nil
 	}
@@ -49,19 +53,19 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 
 	switch foundLibsCount {
 	case 0:
-		score = 0
+		score = minScore
 		evalMessages = append(
 			evalMessages,
 			c.WarningFg("No icon library found. Consider adding one for consistent icon usage.\n"),
 		)
 	case 1:
-		score = 100
+		score = maxScore
 		evalMessages = append(evalMessages, fmt.Sprintf(
 			"Using a single icon library: %s, which is ideal.\n",
 			c.InfoFgBold(foundIconsLibs[0])),
 		)
 	default:
-		score = 50
+		score = 70
 		evalMessages = append(
 			evalMessages,
 			fmt.Sprintf(
@@ -74,5 +78,14 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 		}
 	}
 
-	return NewEvaluation(evalName, evalDesc, score, 0, 0, 0, evalMessages), nil
+	return NewEvaluation(
+			evalName,
+			evalDesc,
+			score,
+			maxScore,
+			minScore,
+			weight,
+			evalMessages,
+		),
+		nil
 }

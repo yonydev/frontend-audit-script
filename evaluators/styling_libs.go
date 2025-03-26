@@ -20,6 +20,12 @@ func EvalStylingLibs(content *string) (Evaluation, error) {
 	evalName := "\n>>> Styling Libraries\n"
 	evalDesc := "Checking for common styling libraries...\n"
 
+	initialScore := 100
+	penaltyPoints := 0
+	minScore := 30
+	maxScore := 100
+	weight := 2
+
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
 		return Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
 	}
@@ -41,6 +47,7 @@ func EvalStylingLibs(content *string) (Evaluation, error) {
 			foundStylingLibs = append(foundStylingLibs, lib)
 			if !allowed {
 				disallowedStylingLibs = append(disallowedStylingLibs, lib)
+				penaltyPoints += 10
 			} else {
 				allowedStylingLibs = append(allowedStylingLibs, lib)
 			}
@@ -64,6 +71,17 @@ func EvalStylingLibs(content *string) (Evaluation, error) {
 		)
 	}
 
+	if len(allowedStylingLibs) == 2 {
+		initialScore = 100
+	} else if len(allowedStylingLibs) == 1 {
+		initialScore = 70
+	} else {
+		initialScore = minScore
+	}
+
+	// Subtract penalty points from initial score
+	score := maxValue(initialScore-penaltyPoints, minScore)
+
 	if len(allowedStylingLibs) > 0 {
 		messages = append(
 			messages,
@@ -74,11 +92,18 @@ func EvalStylingLibs(content *string) (Evaluation, error) {
 	return NewEvaluation(
 			evalName,
 			evalDesc,
-			0,
-			0,
-			0,
-			0,
+			score,
+			maxScore,
+			minScore,
+			weight,
 			messages,
 		),
 		nil
+}
+
+func maxValue(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }

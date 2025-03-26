@@ -18,6 +18,11 @@ func EvalMuiExtraLibs(content *string) (Evaluation, error) {
 	evalName := "\n>>> MUI Extra Libraries\n"
 	evalDesc := "Checking for MUI extra libraries...\n"
 
+	score := 0
+	weight := 1
+	minScore := 40
+	maxScore := 100
+
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
 		return Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
 	}
@@ -40,12 +45,24 @@ func EvalMuiExtraLibs(content *string) (Evaluation, error) {
 		}
 	}
 
-	if len(foundLibs) == 0 {
+	switch len(foundLibs) {
+	case 0:
+		score = maxScore
 		messages = append(
 			messages,
 			c.SuccessFg("No MUI extra libraries found. Nice, keep it up! 🦾, keep it clean! 🧹"),
 		)
-	} else {
+	case 1:
+		score = 70
+		messages = append(
+			messages,
+			fmt.Sprintf(
+				"Found %s in package.json.\n",
+				c.InfoFgBold(strings.Join(foundLibs, ", ")),
+			),
+		)
+	default:
+		score = minScore
 		messages = append(
 			messages,
 			fmt.Sprintf(
@@ -58,10 +75,10 @@ func EvalMuiExtraLibs(content *string) (Evaluation, error) {
 	return NewEvaluation(
 			evalName,
 			evalDesc,
-			0,
-			0,
-			0,
-			0,
+			score,
+			maxScore,
+			minScore,
+			weight,
 			messages,
 		),
 		nil
