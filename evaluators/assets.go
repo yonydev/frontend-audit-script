@@ -131,7 +131,7 @@ func EvalAssets(paths []string) (Evaluation, error) {
 			0,
 			0,
 			0,
-      0,
+			3,
 			messages,
 		),
 		nil

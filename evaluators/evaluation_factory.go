@@ -6,7 +6,7 @@ func NewEvaluation(
 	score int,
 	maxScore int,
 	minScore int,
-	weight float64,
+	weight int,
 	msgs []string,
 ) Evaluation {
 	return Evaluation{
