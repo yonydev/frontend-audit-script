@@ -18,6 +18,7 @@ var (
 	frontendFiles      []string
 	assetsFiles        []string
 	stylesFiles        []string
+	evaluations        []evaluators.Evaluation
 )
 
 func main() {
@@ -32,6 +33,10 @@ func main() {
 
 	if len(frontendFiles) > 0 {
 		themeProvidersEvaluation, _ := evaluators.EvalThemeProviders(frontendFiles)
+		webFontsEvaluation, _ := evaluators.EvalWebFonts(stylesFiles)
+
+		evaluations = append(evaluations, themeProvidersEvaluation, webFontsEvaluation)
+    // Theme Providers Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			themeProvidersEvaluation.Name,
@@ -39,13 +44,13 @@ func main() {
 			utils.MapMessagePrinter(themeProvidersEvaluation.Messages),
 			// themeProvidersEvaluation.Score,
 		)
-		webFontsEvaluation, _ := evaluators.EvalWebFonts(stylesFiles)
+    // Web Fonts Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			webFontsEvaluation.Name,
 			webFontsEvaluation.Description,
 			utils.MapMessagePrinter(webFontsEvaluation.Messages),
-		// webFontsEvaluation.Score,
+			// webFontsEvaluation.Score,
 		)
 	} else {
 		fmt.Println("No .js, .jsx, .ts, .tsx files found")
@@ -53,6 +58,9 @@ func main() {
 
 	if len(assetsFiles) > 0 {
 		assetsEvaluation, _ := evaluators.EvalAssets(assetsFiles)
+
+		evaluations = append(evaluations, assetsEvaluation)
+    // Assets Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			assetsEvaluation.Name,
@@ -63,6 +71,8 @@ func main() {
 	} else {
 		fmt.Println("No image assets found")
 	}
+
+	evaluators.CalculateScore(evaluations)
 }
 
 func walkDirFunc(path string, d fs.DirEntry, err error) error {
@@ -82,6 +92,13 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 		packageJSONContent = readers.FileReader(&path)
 
 		reactEvaluation, _ := evaluators.EvalReactVersion(&packageJSONContent)
+		iconsEvaluation, _ := evaluators.EvalIconLibs(&packageJSONContent)
+		muiExtraLibsEvaluation, _ := evaluators.EvalMuiExtraLibs(&packageJSONContent)
+		stylingLibsEvaluation, _ := evaluators.EvalStylingLibs(&packageJSONContent)
+
+		evaluations = append(evaluations, reactEvaluation, iconsEvaluation, muiExtraLibsEvaluation, stylingLibsEvaluation)
+
+    // React Version Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			reactEvaluation.Name,
@@ -90,7 +107,7 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 			// reactEvaluation.Score,
 		)
 
-		iconsEvaluation, _ := evaluators.EvalIconLibs(&packageJSONContent)
+    // Icons Libs Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			iconsEvaluation.Name,
@@ -99,7 +116,7 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 			// iconsEvaluation.Score,
 		)
 
-		muiExtraLibsEvaluation, _ := evaluators.EvalMuiExtraLibs(&packageJSONContent)
+    // Mui Extra Libs Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			muiExtraLibsEvaluation.Name,
@@ -108,13 +125,13 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 			// muiExtraLibsEvaluation.Score,
 		)
 
-		stylingLibsEvaluation, _ := evaluators.EvalStylingLibs(&packageJSONContent)
+    // Styling Libs Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			stylingLibsEvaluation.Name,
 			stylingLibsEvaluation.Description,
 			utils.MapMessagePrinter(stylingLibsEvaluation.Messages),
-			// muiExtraLibsEvaluation.Score,
+			// stylingLibsEvaluation.Score,
 		)
 
 	}
