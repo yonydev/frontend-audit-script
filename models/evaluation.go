@@ -1,4 +1,4 @@
-package evaluators
+package models
 
 type Evaluation struct {
 	Name        string

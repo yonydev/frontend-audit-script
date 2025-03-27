@@ -1,5 +1,7 @@
 package evaluators
 
+import "github.com/yonydev/frontend-audit-script/models"
+
 func NewEvaluation(
 	name string,
 	desc string,
@@ -8,8 +10,8 @@ func NewEvaluation(
 	minScore int,
 	weight int,
 	msgs []string,
-) Evaluation {
-	return Evaluation{
+) models.Evaluation {
+	return models.Evaluation{
 		Name:        name,
 		Description: desc,
 		Score:       score,
