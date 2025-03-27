@@ -9,10 +9,11 @@ import (
 	"sync"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/utils"
 )
 
-func EvalWebFonts(paths []string) (Evaluation, error) {
+func EvalWebFonts(paths []string) (models.Evaluation, error) {
 	var messages []string
 	var mu sync.Mutex
 	var webFonts []string
@@ -101,7 +102,7 @@ func EvalWebFonts(paths []string) (Evaluation, error) {
 
 	for res := range results {
 		if res.err != nil {
-			return Evaluation{}, res.err
+			return models.Evaluation{}, res.err
 		}
 	}
 

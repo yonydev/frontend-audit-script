@@ -9,9 +9,10 @@ import (
 	"sync"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
 )
 
-func EvalThemeProviders(paths []string) (Evaluation, error) {
+func EvalThemeProviders(paths []string) (models.Evaluation, error) {
 	var filesUsingThemeProvider []string
 	var themeProvidersNames []string
 	var messages []string
@@ -81,7 +82,7 @@ func EvalThemeProviders(paths []string) (Evaluation, error) {
 
 	for res := range results {
 		if res.err != nil {
-			return Evaluation{}, res.err
+			return models.Evaluation{}, res.err
 		}
 	}
 

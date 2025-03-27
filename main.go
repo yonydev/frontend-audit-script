@@ -9,6 +9,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/yonydev/frontend-audit-script/evaluators"
+	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/readers"
 	"github.com/yonydev/frontend-audit-script/utils"
 )
@@ -18,7 +19,7 @@ var (
 	frontendFiles      []string
 	assetsFiles        []string
 	stylesFiles        []string
-	evaluations        []evaluators.Evaluation
+	evaluations        []models.Evaluation
 )
 
 func main() {

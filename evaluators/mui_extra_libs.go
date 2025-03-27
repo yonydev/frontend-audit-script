@@ -7,10 +7,11 @@ import (
 	"strings"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/utils"
 )
 
-func EvalMuiExtraLibs(content *string) (Evaluation, error) {
+func EvalMuiExtraLibs(content *string) (models.Evaluation, error) {
 	var packageJSON map[string]any
 	var messages []string
 	var foundLibs []string
@@ -24,7 +25,7 @@ func EvalMuiExtraLibs(content *string) (Evaluation, error) {
 	maxScore := 100
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
-		return Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
+		return models.Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
 	}
 
 	dependencies, foundDeps := packageJSON["dependencies"].(map[string]any)

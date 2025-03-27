@@ -1,8 +1,12 @@
 package evaluators
 
-import "fmt"
+import (
+	"fmt"
 
-func normalizeWeights(evaluations []Evaluation) []float64 {
+	"github.com/yonydev/frontend-audit-script/models"
+)
+
+func normalizeWeights(evaluations []models.Evaluation) []float64 {
 	var totalWeight int
 	for _, eval := range evaluations {
 		totalWeight += eval.Weight
@@ -23,7 +27,7 @@ func normalizeScore(score, minScore, maxScore int) float64 {
 	return float64(score-minScore) / float64(maxScore-minScore) * 100
 }
 
-func CalculateScore(evaluations []Evaluation) float64 {
+func CalculateScore(evaluations []models.Evaluation) float64 {
 	var totalScore float64
 	normalizedWeights := normalizeWeights(evaluations)
 

@@ -12,10 +12,11 @@ import (
 	_ "golang.org/x/image/webp"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/utils"
 )
 
-func EvalAssets(paths []string) (Evaluation, error) {
+func EvalAssets(paths []string) (models.Evaluation, error) {
 	var moderateAssetsToOptimize []string
 	var criticalAssetsToOptimize []string
 	var messages []string
@@ -128,9 +129,9 @@ func EvalAssets(paths []string) (Evaluation, error) {
 	return NewEvaluation(
 			evalName,
 			evalDesc,
-			0,
-			0,
-			0,
+			100,
+			100,
+			20,
 			3,
 			messages,
 		),

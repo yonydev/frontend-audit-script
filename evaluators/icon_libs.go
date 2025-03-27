@@ -6,10 +6,11 @@ import (
 	"maps"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/utils"
 )
 
-func EvalIconLibs(content *string) (Evaluation, error) {
+func EvalIconLibs(content *string) (models.Evaluation, error) {
 	var packageJSON map[string]any
 	var foundIconsLibs []string
 	var evalMessages []string
@@ -24,7 +25,7 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 	minScore := 40
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
-		return Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
+		return models.Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
 	}
 
 	dependencies, foundDeps := packageJSON["dependencies"].(map[string]any)
