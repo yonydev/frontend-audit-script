@@ -53,7 +53,7 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 
 	switch foundLibsCount {
 	case 0:
-		score = minScore
+		score = 90
 		evalMessages = append(
 			evalMessages,
 			c.WarningFg("No icon library found. Consider adding one for consistent icon usage.\n"),

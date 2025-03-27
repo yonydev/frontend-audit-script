@@ -80,7 +80,7 @@ func EvalStylingLibs(content *string) (Evaluation, error) {
 	}
 
 	// Subtract penalty points from initial score
-	score := maxValue(initialScore-penaltyPoints, minScore)
+	score := max(initialScore-penaltyPoints, minScore)
 
 	if len(allowedStylingLibs) > 0 {
 		messages = append(
@@ -99,11 +99,4 @@ func EvalStylingLibs(content *string) (Evaluation, error) {
 			messages,
 		),
 		nil
-}
-
-func maxValue(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
