@@ -8,6 +8,7 @@ import (
 	"regexp"
 
 	"github.com/fatih/color"
+	"github.com/sethvargo/go-githubactions"
 	"github.com/yonydev/frontend-audit-script/evaluators"
 	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/readers"
@@ -28,7 +29,9 @@ func main() {
 	dir, _ := os.Getwd()
 	walking_directory_err := filepath.WalkDir(dir, walkDirFunc)
 
-	// githubactions.SetEnv("JOB_ENV", "Hello World")
+  githubCtx, _ := githubactions.New().Context()
+
+  fmt.Printf("Running in GitHub Actions: %v\n", githubCtx)
 
 	if walking_directory_err != nil {
 		panic(walking_directory_err)
