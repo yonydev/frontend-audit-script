@@ -6,6 +6,9 @@ import (
 	"regexp"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
+	"github.com/yonydev/frontend-audit-script/utils"
+	"github.com/yonydev/frontend-audit-script/writers"
 )
 
 var (
@@ -13,21 +16,21 @@ var (
 	evalDesc = "Checking for React dev dependency...\n"
 )
 
-func EvalReactVersion(content *string) (Evaluation, error) {
+func EvalReactVersion(content *string) (models.Evaluation, error) {
 	var packageJSON map[string]any
 
-  score := 0
-  minScore := 50
-  maxScore := 100
-  weight := 3
+	score := 0
+	minScore := 50
+	maxScore := 100
+	weight := 3
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
-		return Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
+		return models.Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
 	}
 
 	dependencies, found := packageJSON["dependencies"].(map[string]any)
 	if !found {
-    score = minScore
+		score = minScore
 		return NewEvaluation(
 				evalName,
 				evalDesc,
@@ -42,7 +45,7 @@ func EvalReactVersion(content *string) (Evaluation, error) {
 
 	reactVersion, found := dependencies["react"].(string)
 	if !found {
-    score = minScore
+		score = minScore
 		return NewEvaluation(
 				evalName,
 				evalDesc,
@@ -72,9 +75,10 @@ func extractMajorVersion(version string) int {
 	return 0
 }
 
-func evaluateReactVersion(version int) Evaluation {
+func evaluateReactVersion(version int) models.Evaluation {
 	var score int
 	var evalMessages []string
+	weight := 3
 
 	if version == 17 || version == 18 {
 		score = 100
@@ -96,13 +100,24 @@ func evaluateReactVersion(version int) Evaluation {
 		)
 	}
 
+	writers.SetEvaluationEnvVariables(
+		NewEvaluation(
+			evalName,
+			evalDesc,
+			score,
+			100,
+			50,
+			0,
+			evalMessages,
+		), utils.ReactVersionEnvVars)
+
 	return NewEvaluation(
 		evalName,
 		evalDesc,
 		score,
 		100,
 		50,
-		0,
+		weight,
 		evalMessages,
 	)
 }

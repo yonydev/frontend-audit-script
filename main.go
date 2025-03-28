@@ -28,6 +28,8 @@ func main() {
 	dir, _ := os.Getwd()
 	walking_directory_err := filepath.WalkDir(dir, walkDirFunc)
 
+	// githubactions.SetEnv("JOB_ENV", "Hello World")
+
 	if walking_directory_err != nil {
 		panic(walking_directory_err)
 	}
@@ -37,7 +39,7 @@ func main() {
 		webFontsEvaluation, _ := evaluators.EvalWebFonts(stylesFiles)
 
 		evaluations = append(evaluations, themeProvidersEvaluation, webFontsEvaluation)
-    // Theme Providers Evaluation
+		// Theme Providers Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			themeProvidersEvaluation.Name,
@@ -45,7 +47,7 @@ func main() {
 			utils.MapMessagePrinter(themeProvidersEvaluation.Messages),
 			// themeProvidersEvaluation.Score,
 		)
-    // Web Fonts Evaluation
+		// Web Fonts Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			webFontsEvaluation.Name,
@@ -61,7 +63,7 @@ func main() {
 		assetsEvaluation, _ := evaluators.EvalAssets(assetsFiles)
 
 		evaluations = append(evaluations, assetsEvaluation)
-    // Assets Evaluation
+		// Assets Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			assetsEvaluation.Name,
@@ -99,7 +101,7 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 
 		evaluations = append(evaluations, reactEvaluation, iconsEvaluation, muiExtraLibsEvaluation, stylingLibsEvaluation)
 
-    // React Version Evaluation
+		// React Version Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			reactEvaluation.Name,
@@ -108,7 +110,7 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 			// reactEvaluation.Score,
 		)
 
-    // Icons Libs Evaluation
+		// Icons Libs Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			iconsEvaluation.Name,
@@ -117,7 +119,7 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 			// iconsEvaluation.Score,
 		)
 
-    // Mui Extra Libs Evaluation
+		// Mui Extra Libs Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			muiExtraLibsEvaluation.Name,
@@ -126,7 +128,7 @@ func walkDirFunc(path string, d fs.DirEntry, err error) error {
 			// muiExtraLibsEvaluation.Score,
 		)
 
-    // Styling Libs Evaluation
+		// Styling Libs Evaluation
 		fmt.Printf(
 			"%s%s%v\n",
 			stylingLibsEvaluation.Name,

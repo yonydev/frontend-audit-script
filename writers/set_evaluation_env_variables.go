@@ -19,6 +19,7 @@ func SetEvaluationEnvVariables(evaluation models.Evaluation, envVars map[string]
 
 	for envKey, field := range envVars {
 		if value, exists := evalMap[field]; exists {
+      fmt.Printf("%s: %s", envKey, value)
 			githubactions.SetEnv(envKey, value)
 			fmt.Printf("✅ Set %s=%s\n", envKey, value) // Debug output
 		}
