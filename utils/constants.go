@@ -63,3 +63,11 @@ var AssetsExtensions = []string{
 	".svg",
 	".webp",
 }
+
+var ReactVersionEnvVars = map[string]string{
+  "REACT_VERSION_EVAL_NAME": "Name",
+  "REACT_VERSION_SCORE": "Score",
+  "REACT_VERSION_MAX_SCORE": "MaxScore",
+  "REACT_VERSION_MIN_SCORE": "MinScore",
+  "REACT_VERSION_WEIGHT": "Weight",
+}
