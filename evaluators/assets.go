@@ -14,6 +14,7 @@ import (
 	c "github.com/yonydev/frontend-audit-script/colorize"
 	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/utils"
+	"github.com/yonydev/frontend-audit-script/writers"
 )
 
 func EvalAssets(paths []string) (models.Evaluation, error) {
@@ -126,14 +127,16 @@ func EvalAssets(paths []string) (models.Evaluation, error) {
 		messages = append(messages, c.SuccessFg("No assets found to optimize. Keep up the good work!"))
 	}
 
-	return NewEvaluation(
-			evalName,
-			evalDesc,
-			100,
-			100,
-			20,
-			3,
-			messages,
-		),
-		nil
+	evaluation := NewEvaluation(
+		evalName,
+		evalDesc,
+		100,
+		100,
+		20,
+		3,
+		messages,
+	)
+	writers.SetEvaluationEnvVariables(evaluation, utils.AssetsEnvVars)
+
+	return evaluation, nil
 }

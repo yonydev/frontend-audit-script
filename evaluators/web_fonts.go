@@ -11,6 +11,7 @@ import (
 	c "github.com/yonydev/frontend-audit-script/colorize"
 	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/utils"
+	"github.com/yonydev/frontend-audit-script/writers"
 )
 
 func EvalWebFonts(paths []string) (models.Evaluation, error) {
@@ -140,14 +141,16 @@ func EvalWebFonts(paths []string) (models.Evaluation, error) {
 		}
 	}
 
-	return NewEvaluation(
-			evalName,
-			evalDesc,
-			score,
-			maxScore,
-			minScore,
-			weight,
-			messages,
-		),
-		nil
+	evaluation := NewEvaluation(
+		evalName,
+		evalDesc,
+		score,
+		maxScore,
+		minScore,
+		weight,
+		messages,
+	)
+	writers.SetEvaluationEnvVariables(evaluation, utils.WebFontsEnvVars)
+
+	return evaluation, nil
 }

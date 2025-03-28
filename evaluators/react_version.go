@@ -100,18 +100,7 @@ func evaluateReactVersion(version int) models.Evaluation {
 		)
 	}
 
-	writers.SetEvaluationEnvVariables(
-		NewEvaluation(
-			evalName,
-			evalDesc,
-			score,
-			100,
-			50,
-			0,
-			evalMessages,
-		), utils.ReactVersionEnvVars)
-
-	return NewEvaluation(
+	evaluation := NewEvaluation(
 		evalName,
 		evalDesc,
 		score,
@@ -120,4 +109,7 @@ func evaluateReactVersion(version int) models.Evaluation {
 		weight,
 		evalMessages,
 	)
+	writers.SetEvaluationEnvVariables(evaluation, utils.ReactVersionEnvVars)
+
+	return evaluation
 }

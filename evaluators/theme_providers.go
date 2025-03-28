@@ -10,6 +10,8 @@ import (
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
 	"github.com/yonydev/frontend-audit-script/models"
+	"github.com/yonydev/frontend-audit-script/utils"
+	"github.com/yonydev/frontend-audit-script/writers"
 )
 
 func EvalThemeProviders(paths []string) (models.Evaluation, error) {
@@ -118,15 +120,17 @@ func EvalThemeProviders(paths []string) (models.Evaluation, error) {
 	}
 
 	score := max(initialScore-penaltyPoints, minScore)
+	evaluation := NewEvaluation(
+		evalName,
+		evalDesc,
+		score,
+		maxScore,
+		minScore,
+		weight,
+		messages,
+	)
 
-	return NewEvaluation(
-			evalName,
-			evalDesc,
-			score,
-			maxScore,
-			minScore,
-			weight,
-			messages,
-		),
-		nil
+	writers.SetEvaluationEnvVariables(evaluation, utils.ThemeProvidersEnvVars)
+
+	return evaluation, nil
 }
