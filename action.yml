@@ -7,9 +7,24 @@ inputs:
     required: true
 
 runs:
-  using: docker
-  image: Dockerfile
+  using: composite
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-outputs:
-  pr_comment:
-    description: "PR comment result"
+    - name: Run Go Audit Scrip
+      uses: docker://yonatanrojas/frontendauditscript:latest
+
+    - name: Post PR Comment
+      uses: actions/github-script@v6
+      env:
+        EVALUATION_TOTAL_SCORE: ${{ env.EVALUATION_TOTAL_SCORE }}
+      with:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        script: |
+          const path = require('path');
+          const postPrComment = require(path.join(process.env.GITHUB_WORKSPACE, 'scripts/postPRComment.js'));
+
+          const finalScore = process.env.EVALUATION_TOTAL_SCORE
+
+          postPrComment({ github, context, finalScore })
