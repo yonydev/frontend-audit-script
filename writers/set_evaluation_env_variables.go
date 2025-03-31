@@ -8,6 +8,7 @@ import (
 )
 
 func SetEvaluationEnvVariables(evaluation models.Evaluation, envVars map[string]string) {
+  action := githubactions.New()
 	evalMap := map[string]string{
 		"Name":     evaluation.Name,
 		"Score":    strconv.Itoa(evaluation.Score),
@@ -18,10 +19,10 @@ func SetEvaluationEnvVariables(evaluation models.Evaluation, envVars map[string]
 
 	for envKey, field := range envVars {
 		if value, exists := evalMap[field]; exists {
-			githubactions.SetEnv(envKey, value)
+			action.SetEnv(envKey, value)
 			// fmt.Printf("✅ Set %s=%s\n", envKey, value) // Debug output
 		} else {
-			githubactions.Warningf("Couldn't set the value of field '%s' for environment variable key '%s'", field, envKey)
+			action.Warningf("Couldn't set the value of field '%s' for environment variable key '%s'", field, envKey)
 		}
 	}
 }
