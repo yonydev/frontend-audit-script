@@ -11,5 +11,11 @@ ENV GO111MODULE=on
 # Compile the action
 RUN go build -o /bin/action
 
+# Install Node.js (required to run the JavaScript script)
+RUN apt-get update && apt-get install -y nodejs npm
+
 # Specify the container's entrypoint as the action
 ENTRYPOINT ["/bin/action"]
+
+# Set the entrypoint to run the Go action first, then the JavaScript script
+CMD ["/bin/action"] && node /src/scripts/post-pr-comment.js
