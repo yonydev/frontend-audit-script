@@ -1,6 +1,15 @@
 name: "Go Frontend Audit Script Action"
 description: "Runs a go script to audit a given repository"
 
+inputs:
+  token:
+    description: "GitHub token to add commits to pull request."
+    required: true
+
 runs:
   using: docker
   image: Dockerfile
+
+outputs:
+  pr_comment:
+    description: "PR comment result"
