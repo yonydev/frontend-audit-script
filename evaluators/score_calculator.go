@@ -2,7 +2,9 @@ package evaluators
 
 import (
 	"fmt"
+  "strconv"
 
+	"github.com/sethvargo/go-githubactions"
 	"github.com/yonydev/frontend-audit-script/models"
 )
 
@@ -45,7 +47,7 @@ func CalculateScore(evaluations []models.Evaluation) float64 {
 		}
 	}
 
-  fmt.Printf("Total score: %.2f\n", totalScore)
+	githubactions.SetEnv("EVALUATION_TOTAL_SCORE", strconv.FormatFloat(totalScore, 'f', 2, 64))
 
 	return totalScore
 }
