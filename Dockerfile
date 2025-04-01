@@ -4,7 +4,7 @@ FROM golang:1.24
 # Copy all the files from the host into the container
 WORKDIR /src
 COPY . .
-COPY scripts/postPRComment.js /scripts/postPRComment.js
+COPY scripts/postPRComment.js /home/runner/work/clipmx-frontend-libs/clipmx-frontend-libs/scripts/postPRComment.js
 
 # Enable Go modules
 ENV GO111MODULE=on

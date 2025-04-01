@@ -12,6 +12,12 @@ runs:
     - name: Run Go Audit Scrip
       uses: docker://yonatanrojas/frontendauditscript:latest
 
+    - name: Echo JS Path
+      shell: bash
+      run: |
+        ls -la
+        pwd
+
     - name: Post PR Comment
       uses: actions/github-script@v6
       env:
@@ -20,7 +26,7 @@ runs:
         github-token: ${{ inputs.token }}
         script: |
           const path = require('path');
-          const postPrComment = require(path.join(process.env.GITHUB_WORKSPACE, 'scripts/postPRComment.js'));
+          const postPrComment = require('/scripts/postPRComment.js');
 
           const finalScore = process.env.EVALUATION_TOTAL_SCORE
 
