@@ -1,9 +1,10 @@
 # Specify the version of Go to use
-FROM golang:1.24
+FROM --platform=linux/amd64 golang:1.24
 
 # Copy all the files from the host into the container
 WORKDIR /src
 COPY . .
+RUN mkdir -p /scripts
 COPY scripts/postPRComment.js /home/runner/work/clipmx-frontend-libs/clipmx-frontend-libs/scripts/postPRComment.js
 
 # Enable Go modules
