@@ -17,7 +17,7 @@ runs:
       env:
         EVALUATION_TOTAL_SCORE: ${{ env.EVALUATION_TOTAL_SCORE }}
       with:
-        GITHUB_TOKEN: ${{ inputs.token }}
+        github-token: ${{ inputs.token }}
         script: |
           const path = require('path');
           const postPrComment = require(path.join(process.env.GITHUB_WORKSPACE, 'scripts/postPRComment.js'));
