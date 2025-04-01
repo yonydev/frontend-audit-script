@@ -12,6 +12,10 @@ runs:
     - name: Run Go Audit Scrip
       uses: docker://yonatanrojas/frontendauditscript:latest
 
+    - name: Debug docker Image
+      shell: bash
+      run: docker run --rm yonatanrojas/frontendauditscript:latest ls -la
+
     - name: Echo JS Path
       shell: bash
       run: |
