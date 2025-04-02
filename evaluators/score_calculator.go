@@ -2,9 +2,9 @@ package evaluators
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
-	"github.com/sethvargo/go-githubactions"
 	"github.com/yonydev/frontend-audit-script/models"
 )
 
@@ -47,7 +47,10 @@ func CalculateScore(evaluations []models.Evaluation) float64 {
 		}
 	}
 
-	githubactions.SetEnv("EVALUATION_TOTAL_SCORE", strconv.FormatFloat(totalScore, 'f', 2, 64))
+	err := os.Setenv("EVALUATION_TOTAL_SCORE", strconv.FormatFloat(totalScore, 'f', 2, 64))
+	if err != nil {
+		fmt.Println("⚠️ Failed to set env variable for EVALUATION_TOTAL_SCORE:", err)
+	}
 
 	return totalScore
 }

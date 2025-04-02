@@ -1,14 +1,14 @@
 package writers
 
 import (
+	"fmt"
+	"os"
 	"strconv"
 
-	"github.com/sethvargo/go-githubactions"
 	"github.com/yonydev/frontend-audit-script/models"
 )
 
 func SetEvaluationEnvVariables(evaluation models.Evaluation, envVars map[string]string) {
-	action := githubactions.New()
 	evalMap := map[string]string{
 		"Name":     evaluation.Name,
 		"Score":    strconv.Itoa(evaluation.Score),
@@ -17,12 +17,40 @@ func SetEvaluationEnvVariables(evaluation models.Evaluation, envVars map[string]
 		"Weight":   strconv.Itoa(evaluation.Weight),
 	}
 
+	githubEnvPath := os.Getenv("GITHUB_ENV")
+	var file *os.File
+	var err error
+
+	if githubEnvPath != "" {
+		file, err = os.OpenFile(githubEnvPath, os.O_APPEND|os.O_WRONLY, 0644)
+		if err != nil {
+			fmt.Printf("❌ Error opening GITHUB_ENV file: %v\n", err)
+			file = nil
+		}
+	}
+
 	for envKey, field := range envVars {
 		if value, exists := evalMap[field]; exists {
-			action.SetEnv(envKey, value)
-			// fmt.Printf("✅ Set %s=%s\n", envKey, value) // Debug output
+			err := os.Setenv(envKey, value)
+			if err != nil {
+				fmt.Printf("⚠️ Error setting %s: %v\n", envKey, err)
+			}
+			// } else {
+			// 	fmt.Printf("✅ Set %s=%s\n", envKey, value)
+			// }
+			// Write to GITHUB_ENV (if available)
+			if file != nil {
+				_, err := file.WriteString(fmt.Sprintf("%s=%s\n", envKey, value))
+				if err != nil {
+					fmt.Printf("⚠️ Error writing %s to GITHUB_ENV: %v\n", envKey, err)
+				}
+			}
 		} else {
-			action.Warningf("Couldn't set the value of field '%s' for environment variable key '%s'", field, envKey)
+			fmt.Printf("⚠️ Couldn't set field '%s' for environment variable key '%s'\n", field, envKey)
 		}
+	}
+	// Close file if it was opened
+	if file != nil {
+		file.Close()
 	}
 }
