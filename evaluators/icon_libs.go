@@ -16,8 +16,8 @@ func EvalIconLibs(content *string) (models.Evaluation, error) {
 	var foundIconsLibs []string
 	var evalMessages []string
 
-	evalName := "\n>>> Icon Libraries\n"
-	evalDesc := "Checking for common icon libraries...\n"
+	evalName := ">>> Icon Libraries"
+	evalDesc := "\nChecking for common icon libraries...\n"
 	foundLibsCount := 0
 
 	score := 0

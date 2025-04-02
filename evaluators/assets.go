@@ -22,8 +22,8 @@ func EvalAssets(paths []string) (models.Evaluation, error) {
 	var criticalAssetsToOptimize []string
 	var messages []string
 
-	evalName := "\n>>> Assets Optimization Check\n"
-	evalDesc := "Looking for Checking for .jpg, .jpeg, .png, .gif, .svg, .webp files..."
+	evalName := ">>> Assets Optimization Check"
+	evalDesc := "\nLooking for Checking for .jpg, .jpeg, .png, .gif, .svg, .webp files...\n"
 
 	if len(paths) == 0 {
 		messages = append(messages, "\nNo assets found in project.")

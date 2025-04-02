@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	evalName = ">>> Check React Version\n"
-	evalDesc = "Checking for React dev dependency...\n"
+	evalName = ">>> Check React Version"
+	evalDesc = "\nChecking for React dev dependency...\n"
 )
 
 func EvalReactVersion(content *string) (models.Evaluation, error) {

@@ -19,8 +19,8 @@ func EvalStylingLibs(content *string) (models.Evaluation, error) {
 	var disallowedStylingLibs []string
 	var messages []string
 
-	evalName := "\n>>> Styling Libraries\n"
-	evalDesc := "Checking for common styling libraries...\n"
+	evalName := ">> Styling Libraries"
+	evalDesc := "\nChecking for common styling libraries...\n"
 
 	initialScore := 100
 	penaltyPoints := 0

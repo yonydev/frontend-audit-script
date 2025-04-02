@@ -22,8 +22,8 @@ func EvalThemeProviders(paths []string) (models.Evaluation, error) {
 	uniqueProviders := make(map[string]struct{})
 	tagPattern := regexp.MustCompile(`<(ThemeProvider|ThemeProviders|MuiThemeProvider|UIThemeProvider)\b[^>]*?>`)
 
-	evalName := ">>> Theme Provider Check\n"
-	evalDesc := "Checking for theme provider components in files...\n"
+	evalName := ">>> Theme Provider Check"
+	evalDesc := "\nChecking for theme provider components in files...\n"
 	initialScore := 100
 	minScore := 40
 	maxScore := 100

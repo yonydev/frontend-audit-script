@@ -32,8 +32,8 @@ func EvalWebFonts(paths []string) (models.Evaluation, error) {
 	googleFontsImportsRegex := regexp.MustCompile(`https://fonts.googleapis.com/css\?family=([^&"']+)`)
 	googleFontsLinksRegex := regexp.MustCompile(`<link[^>]+href=["']https://fonts.googleapis.com/css\?family=([^:"'&,]+)`)
 
-	evalName := "\n>>> Web Fonts Check\n"
-	evalDesc := "Checking for web fonts in .css, .scss, .sass files...\n"
+	evalName := ">>> Web Fonts Check"
+	evalDesc := "\nChecking for web fonts in .css, .scss, .sass files...\n"
 
 	type result struct {
 		path string

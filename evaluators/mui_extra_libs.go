@@ -17,8 +17,8 @@ func EvalMuiExtraLibs(content *string) (models.Evaluation, error) {
 	var messages []string
 	var foundLibs []string
 
-	evalName := "\n>>> MUI Extra Libraries\n"
-	evalDesc := "Checking for MUI extra libraries...\n"
+	evalName := ">>> MUI Extra Libraries"
+	evalDesc := "\nChecking for MUI extra libraries...\n"
 
 	score := 0
 	weight := 1
