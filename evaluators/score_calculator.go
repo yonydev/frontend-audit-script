@@ -2,7 +2,7 @@ package evaluators
 
 import (
 	"fmt"
-  "strconv"
+	"strconv"
 
 	"github.com/sethvargo/go-githubactions"
 	"github.com/yonydev/frontend-audit-script/models"

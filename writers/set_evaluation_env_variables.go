@@ -8,7 +8,7 @@ import (
 )
 
 func SetEvaluationEnvVariables(evaluation models.Evaluation, envVars map[string]string) {
-  action := githubactions.New()
+	action := githubactions.New()
 	evalMap := map[string]string{
 		"Name":     evaluation.Name,
 		"Score":    strconv.Itoa(evaluation.Score),

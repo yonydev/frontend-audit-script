@@ -12,7 +12,6 @@ import (
 	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/readers"
 	"github.com/yonydev/frontend-audit-script/utils"
-	"github.com/yonydev/frontend-audit-script/writers"
 )
 
 var (
@@ -75,7 +74,6 @@ func main() {
 	}
 
 	evaluators.CalculateScore(evaluations)
-  writers.PostPrComment(evaluations)
 }
 
 func walkDirFunc(path string, d fs.DirEntry, err error) error {
