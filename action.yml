@@ -1,37 +1,49 @@
 name: "Go Frontend Audit Script Action"
-description: "Runs a go script to audit a given repository"
+description: "Runs a Go script to audit a given repository"
 
 inputs:
   token:
-    description: "GitHub token to add commits to pull request."
+    description: "GitHub token to add comments to a pull request."
     required: true
 
 runs:
-  using: composite
+  using: "composite"
   steps:
-    - name: Run Go Audit Scrip
-      uses: docker://yonatanrojas/frontendauditscript:latest
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-    - name: Debug docker Image
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: "1.24" # Adjust as needed
+
+    - name: Install Dependencies
       shell: bash
-      run: docker run --rm yonatanrojas/frontendauditscript:latest ls -la
+      run: go mod tidy
 
-    - name: Echo JS Path
+    - name: Run Go Audit Script
+      id: calculate_quality_score
       shell: bash
-      run: |
-        ls -la
-        pwd
-
-    - name: Post PR Comment
-      uses: actions/github-script@v6
       env:
-        EVALUATION_TOTAL_SCORE: ${{ env.EVALUATION_TOTAL_SCORE }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ github.ref_name }}
+        RUN_ID: ${{ github.run_id }}
+        OWNER: ${{ github.actor }}
+        COMMIT_SHA: ${{ github.sha }}
+      run: |
+        echo "Running Go audit script..."
+        echo $GITHUB_ACTION_PATH
+        # go run $GITHUB_ACTION_PATH/calculate_quality_score.go \
+        #   "${{ env.REPO }}" \
+        #   "${{ env.COMMIT_SHA }}" \
+        #   "${{ env.PR_NUMBER }}" \
+        #   "${{ env.RUN_ID }}" \
+        #   "${{ env.OWNER }}"
+
+    - name: Post PR Comment with Results
+      uses: actions/github-script@v6
       with:
         github-token: ${{ inputs.token }}
         script: |
           const path = require('path');
-          const postPrComment = require('/scripts/postPRComment.js');
-
-          const finalScore = process.env.EVALUATION_TOTAL_SCORE
-
-          postPrComment({ github, context, finalScore })
+          const postPrComment = require(path.join(process.env.GITHUB_ACTION_PATH, 'post-pr-comment.js'));
