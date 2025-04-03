@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 
+	c "github.com/yonydev/frontend-audit-script/colorize"
 	"github.com/yonydev/frontend-audit-script/models"
 )
 
@@ -47,10 +48,25 @@ func CalculateScore(evaluations []models.Evaluation) float64 {
 		}
 	}
 
-	err := os.Setenv("EVALUATION_TOTAL_SCORE", strconv.FormatFloat(totalScore, 'f', 2, 64))
-	if err != nil {
-		fmt.Println("⚠️ Failed to set env variable for EVALUATION_TOTAL_SCORE:", err)
+	formattedTotalScore := strconv.FormatFloat(totalScore, 'f', 2, 64)
+	githubEnvPath := os.Getenv("GITHUB_ENV")
+
+	if githubEnvPath != "" {
+		file, err := os.OpenFile(githubEnvPath, os.O_APPEND|os.O_WRONLY, 0644)
+		if err == nil {
+			defer file.Close()
+			_, _ = file.WriteString(fmt.Sprintf("EVALUATION_TOTAL_SCORE=%f\n", totalScore))
+		} else {
+			fmt.Printf("⚠️ Failed to write to GITHUB_ENV: %v\n", err)
+		}
+	} else {
+		fmt.Println("⚠️ GITHUB_ENV is not set, skipping environment export.")
 	}
+
+	fmt.Println(
+		"Total Score: ",
+		c.InfoFgBold(formattedTotalScore),
+	)
 
 	return totalScore
 }
