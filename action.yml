@@ -68,17 +68,20 @@ runs:
       with:
         github-token: ${{ inputs.token }}
         script: |
+          const uniqueIdentifier = "<!-- quality-report-comment -->";
+
           const reactEvalName = process.env.REACT_VERSION_EVAL_NAME
           const reactEvalScore = process.env.REACT_VERSION_SCORE
           const finalScore = process.env.EVALUATION_TOTAL_SCORE
 
-          async function postPrComment({ github, context, evaluationTotalScore, reactEvalName, reactEvalScore, finalScore }) {
           const table = `
               | **Metric**       | **Score**  |
               |-------------------|:------------:|
-              | 🧹 Evaluation Name           | ${lintScore} / 30 |
-              | 📈 Coverage       | ${coverageScore} / 70 |
+              | 🧹 Evaluation Name           | ${reactEvalName} / 30 |
+              | 📈 React EvalScore       | ${reactEvalScore} / 70 |
               | ⭐ **Final**       | **${finalScore}** / 100 |
+
+            ${uniqueIdentifier} <!-- Hidden identifier -->
           `;
 
           const { data: comments } = await github.rest.issues.listComments({
@@ -87,6 +90,7 @@ runs:
             issue_number: context.issue.number
           });
 
+          console.log("--------DATA--------", comments)
           const existingComment = comments.find(comment => comment.body.includes(uniqueIdentifier));
 
           if (existingComment) {
@@ -104,4 +108,3 @@ runs:
                 body: table
               });
             }
-          };
