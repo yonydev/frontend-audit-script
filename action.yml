@@ -12,59 +12,52 @@ runs:
     - name: Run Go Audit Scrip
       uses: docker://yonatanrojas/frontendauditscript:latest
 
-    - name: Debug
-      shell: bash
-      run: |
-        echo -----------DEBUG-------------
-        env
-        ls -la
-
     - name: Post PR Comment
       uses: actions/github-script@v6
       # env:
-      #   REACT_VERSION_EVAL_NAME: ${{ env.REACT_VERSION_EVAL_NAME }}
-      #   REACT_VERSION_SCORE: ${{ env.REACT_VERSION_SCORE }}
-      #   REACT_VERSION_MAX_SCORE: ${{ env.REACT_VERSION_MAX_SCORE }}
-      #   REACT_VERSION_MIX_SCORE: ${{ env.REACT_VERSION_MIX_SCORE }}
-      #   REACT_VERSION_WEIGT: ${{ env.REACT_VERSION_WEIGT }}
+      # REACT_VERSION_EVAL_NAME: ${{ env.REACT_VERSION_EVAL_NAME }}
+      # REACT_VERSION_SCORE: ${{ env.REACT_VERSION_SCORE }}
+      # REACT_VERSION_MAX_SCORE: ${{ env.REACT_VERSION_MAX_SCORE }}
+      # REACT_VERSION_MIX_SCORE: ${{ env.REACT_VERSION_MIX_SCORE }}
+      # REACT_VERSION_WEIGT: ${{ env.REACT_VERSION_WEIGT }}
       #
-      #   ICON_LIBS_EVAL_NAME: ${{ env.ICON_LIBS_EVAL_NAME }}
-      #   ICON_LIBS_SCORE: ${{ env.ICON_LIBS_SCORE }}
-      #   ICON_LIBS_MAX_SCORE: ${{ env.ICON_LIBS_MAX_SCORE }}
-      #   ICON_LIBS_MIN_SCORE: ${{ env.ICON_LIBS_MIN_SCORE }}
-      #   ICON_LIBS_WEIGHT: ${{ env.ICON_LIBS_WEIGHT }}
+      # ICON_LIBS_EVAL_NAME: ${{ env.ICON_LIBS_EVAL_NAME }}
+      # ICON_LIBS_SCORE: ${{ env.ICON_LIBS_SCORE }}
+      # ICON_LIBS_MAX_SCORE: ${{ env.ICON_LIBS_MAX_SCORE }}
+      # ICON_LIBS_MIN_SCORE: ${{ env.ICON_LIBS_MIN_SCORE }}
+      # ICON_LIBS_WEIGHT: ${{ env.ICON_LIBS_WEIGHT }}
       #
-      #   MUI_EXTRA_LIBS_EVAL_NAME: ${{ env.MUI_EXTRA_LIBS_EVAL_NAME }}
-      #   MUI_EXTRA_LIBS_SCORE: ${{ env.MUI_EXTRA_LIBS_SCORE }}
-      #   MUI_EXTRA_LIBS_MAX_SCORE: ${{ env.MUI_EXTRA_LIBS_MAX_SCORE }}
-      #   MUI_EXTRA_LIBS_MIN_SCORE: ${{ env.MUI_EXTRA_LIBS_MIN_SCORE }}
-      #   MUI_EXTRA_LIBS_WEIGHT: ${{ env.MUI_EXTRA_LIBS_WEIGHT }}
+      # MUI_EXTRA_LIBS_EVAL_NAME: ${{ env.MUI_EXTRA_LIBS_EVAL_NAME }}
+      # MUI_EXTRA_LIBS_SCORE: ${{ env.MUI_EXTRA_LIBS_SCORE }}
+      # MUI_EXTRA_LIBS_MAX_SCORE: ${{ env.MUI_EXTRA_LIBS_MAX_SCORE }}
+      # MUI_EXTRA_LIBS_MIN_SCORE: ${{ env.MUI_EXTRA_LIBS_MIN_SCORE }}
+      # MUI_EXTRA_LIBS_WEIGHT: ${{ env.MUI_EXTRA_LIBS_WEIGHT }}
       #
-      #   STYLING_LIBS_EVAL_NAME: ${{ env.STYLING_LIBS_EVAL_NAME }}
-      #   STYLING_LIBS_SCORE: ${{ env.STYLING_LIBS_SCORE }}
-      #   STYLING_LIBS_MAX_SCORE: ${{ env.STYLING_LIBS_MAX_SCORE }}
-      #   STYLING_LIBS_MIN_SCORE: ${{ env.STYLING_LIBS_MIN_SCORE }}
-      #   STYLING_LIBS_WEIGHT: ${{ env.STYLING_LIBS_WEIGHT }}
+      # STYLING_LIBS_EVAL_NAME: ${{ env.STYLING_LIBS_EVAL_NAME }}
+      # STYLING_LIBS_SCORE: ${{ env.STYLING_LIBS_SCORE }}
+      # STYLING_LIBS_MAX_SCORE: ${{ env.STYLING_LIBS_MAX_SCORE }}
+      # STYLING_LIBS_MIN_SCORE: ${{ env.STYLING_LIBS_MIN_SCORE }}
+      # STYLING_LIBS_WEIGHT: ${{ env.STYLING_LIBS_WEIGHT }}
       #
-      #   THEME_PROVIDERS_EVAL_NAME: ${{ env.THEME_PROVIDERS_EVAL_NAME }}
-      #   THEME_PROVIDERS_SCORE: ${{ env.THEME_PROVIDERS_SCORE }}
-      #   THEME_PROVIDERS_MAX_SCORE: ${{ env.THEME_PROVIDERS_MAX_SCORE }}
-      #   THEME_PROVIDERS_MIN_SCORE: ${{ env.THEME_PROVIDERS_MIN_SCORE }}
-      #   THEME_PROVIDERS_WEIGHT: ${{ env.THEME_PROVIDERS_WEIGHT }}
+      # THEME_PROVIDERS_EVAL_NAME: ${{ env.THEME_PROVIDERS_EVAL_NAME }}
+      # THEME_PROVIDERS_SCORE: ${{ env.THEME_PROVIDERS_SCORE }}
+      # THEME_PROVIDERS_MAX_SCORE: ${{ env.THEME_PROVIDERS_MAX_SCORE }}
+      # THEME_PROVIDERS_MIN_SCORE: ${{ env.THEME_PROVIDERS_MIN_SCORE }}
+      # THEME_PROVIDERS_WEIGHT: ${{ env.THEME_PROVIDERS_WEIGHT }}
       #
-      #   WEB_FONTS_EVAL_NAME: ${{ env.WEB_FONTS_EVAL_NAME }}
-      #   WEB_FONTS_SCORE: ${{ env.WEB_FONTS_SCORE }}
-      #   WEB_FONTS_MAX_SCORE: ${{ env.WEB_FONTS_MAX_SCORE }}
-      #   WEB_FONTS_MIN_SCORE: ${{ env.WEB_FONTS_MIN_SCORE }}
-      #   WEB_FONTS_WEIGHT: ${{ env.WEB_FONTS_WEIGHT }}
+      # WEB_FONTS_EVAL_NAME: ${{ env.WEB_FONTS_EVAL_NAME }}
+      # WEB_FONTS_SCORE: ${{ env.WEB_FONTS_SCORE }}
+      # WEB_FONTS_MAX_SCORE: ${{ env.WEB_FONTS_MAX_SCORE }}
+      # WEB_FONTS_MIN_SCORE: ${{ env.WEB_FONTS_MIN_SCORE }}
+      # WEB_FONTS_WEIGHT: ${{ env.WEB_FONTS_WEIGHT }}
       #
-      #   ASSETS_EVAL_NAME: ${{ env.ASSETS_EVAL_NAME }}
-      #   ASSETS_SCORE: ${{ env.ASSETS_SCORE }}
-      #   ASSETS_MAX_SCORE: ${{ env.ASSETS_MAX_SCORE }}
-      #   ASSETS_MIN_SCORE: ${{ env.ASSETS_MIN_SCORE }}
-      #   ASSETS_WEIGHT: ${{ env.ASSETS_WEIGHT }}
+      # ASSETS_EVAL_NAME: ${{ env.ASSETS_EVAL_NAME }}
+      # ASSETS_SCORE: ${{ env.ASSETS_SCORE }}
+      # ASSETS_MAX_SCORE: ${{ env.ASSETS_MAX_SCORE }}
+      # ASSETS_MIN_SCORE: ${{ env.ASSETS_MIN_SCORE }}
+      # ASSETS_WEIGHT: ${{ env.ASSETS_WEIGHT }}
       #
-      #   EVALUATION_TOTAL_SCORE: ${{ env.EVALUATION_TOTAL_SCORE }}
+      # EVALUATION_TOTAL_SCORE: ${{ env.EVALUATION_TOTAL_SCORE }}
       with:
         github-token: ${{ inputs.token }}
         script: |
