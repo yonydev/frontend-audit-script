@@ -20,9 +20,9 @@ func EvalReactVersion(content *string) (models.Evaluation, error) {
 	var packageJSON map[string]any
 
 	score := 0
-	minScore := 50
-	maxScore := 100
-	weight := 3
+	minScore := -2
+	maxScore := 2
+	weight := 1
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
 		return models.Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
@@ -78,22 +78,25 @@ func extractMajorVersion(version string) int {
 func evaluateReactVersion(version int) models.Evaluation {
 	var score int
 	var evalMessages []string
+
+	maxScore := 2
+	minScore := -2
 	weight := 3
 
 	if version == 17 || version == 18 {
-		score = 100
+		score = 2
 		evalMessages = append(evalMessages, fmt.Sprintf(
 			"Using React version %s. React version supported.",
 			c.InfoFgBold(version)),
 		)
-	} else if version < 17 {
-		score = 50
-		evalMessages = append(evalMessages, fmt.Sprintf(
-			"Using React version %s. Consider upgrading to version 17 or 18 for better performance and features.",
-			c.InfoFgBold(version),
-		))
+		// } else if version < 17 {
+		// 	score = 50
+		// 	evalMessages = append(evalMessages, fmt.Sprintf(
+		// 		"Using React version %s. Consider upgrading to version 17 or 18 for better performance and features.",
+		// 		c.InfoFgBold(version),
+		// 	))
 	} else {
-		score = 30
+		score = -2
 		evalMessages = append(evalMessages, fmt.Sprintf(
 			"Using React version %s. This is a future version. Ensure compatibility with your other dependencies.",
 			c.InfoFgBold(version)),
@@ -104,8 +107,8 @@ func evaluateReactVersion(version int) models.Evaluation {
 		evalName,
 		evalDesc,
 		score,
-		100,
-		50,
+		maxScore,
+		minScore,
 		weight,
 		evalMessages,
 	)

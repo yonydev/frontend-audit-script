@@ -130,9 +130,9 @@ func EvalAssets(paths []string) (models.Evaluation, error) {
 	evaluation := NewEvaluation(
 		evalName,
 		evalDesc,
-		100,
-		100,
-		20,
+		1,
+		2,
+		-2,
 		3,
 		messages,
 	)

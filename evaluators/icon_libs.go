@@ -22,8 +22,8 @@ func EvalIconLibs(content *string) (models.Evaluation, error) {
 
 	score := 0
 	weight := 2
-	maxScore := 100
-	minScore := 40
+	maxScore := 1
+	minScore := -2
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
 		return models.Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
@@ -55,7 +55,7 @@ func EvalIconLibs(content *string) (models.Evaluation, error) {
 
 	switch foundLibsCount {
 	case 0:
-		score = 90
+		score = 0
 		evalMessages = append(
 			evalMessages,
 			c.WarningFg("No icon library found. Consider adding one for consistent icon usage.\n"),
@@ -67,7 +67,7 @@ func EvalIconLibs(content *string) (models.Evaluation, error) {
 			c.InfoFgBold(foundIconsLibs[0])),
 		)
 	default:
-		score = 70
+		score = minScore
 		evalMessages = append(
 			evalMessages,
 			fmt.Sprintf(

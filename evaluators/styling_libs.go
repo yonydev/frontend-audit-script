@@ -22,10 +22,11 @@ func EvalStylingLibs(content *string) (models.Evaluation, error) {
 	evalName := ">> Styling Libraries"
 	evalDesc := "\nChecking for common styling libraries...\n"
 
-	initialScore := 100
-	penaltyPoints := 0
-	minScore := 30
-	maxScore := 100
+	// initialScore := 3
+	score := 3
+	// penaltyPoints := 0
+	minScore := -2
+	maxScore := 3
 	weight := 2
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
@@ -49,7 +50,7 @@ func EvalStylingLibs(content *string) (models.Evaluation, error) {
 			foundStylingLibs = append(foundStylingLibs, lib)
 			if !allowed {
 				disallowedStylingLibs = append(disallowedStylingLibs, lib)
-				penaltyPoints += 10
+				// penaltyPoints += 10
 			} else {
 				allowedStylingLibs = append(allowedStylingLibs, lib)
 			}
@@ -74,15 +75,18 @@ func EvalStylingLibs(content *string) (models.Evaluation, error) {
 	}
 
 	if len(allowedStylingLibs) == 2 {
-		initialScore = 100
+		// initialScore = maxScore
+		score = maxScore
 	} else if len(allowedStylingLibs) == 1 {
-		initialScore = 70
+		// initialScore = 1
+		score = 1
 	} else {
-		initialScore = minScore
+		// initialScore = minScore
+		score = minScore
 	}
 
 	// Subtract penalty points from initial score
-	score := max(initialScore-penaltyPoints, minScore)
+	// score := max(initialScore-penaltyPoints, minScore)
 
 	if len(allowedStylingLibs) > 0 {
 		messages = append(

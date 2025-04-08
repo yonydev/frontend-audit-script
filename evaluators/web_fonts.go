@@ -21,8 +21,8 @@ func EvalWebFonts(paths []string) (models.Evaluation, error) {
 	var filesWithWebFonts []string
 
 	score := 0
-	minScore := 40
-	maxScore := 100
+	minScore := -3
+	maxScore := 2
 	weight := 4
 
 	filesWithWebFontsSet := make(map[string]struct{}) // Use a map to avoid duplicates
@@ -118,7 +118,7 @@ func EvalWebFonts(paths []string) (models.Evaluation, error) {
 
 	switch len(webFontsSet) {
 	case 0:
-		score = 60
+		score = 0
 		messages = append(
 			messages,
 			c.WarningFg("No web fonts found in the project. Consider using system fonts or generic font families."),
