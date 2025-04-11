@@ -3,7 +3,6 @@ FROM golang:1.24
 # Copy all the files from the host into the container
 WORKDIR /src
 COPY . .
-COPY postPRComment.js /src/postPRComment.js
 
 # Enable Go modules
 ENV GO111MODULE=on
