@@ -24,6 +24,9 @@ The action posts a detailed evaluation report as a comment on the pull request, 
 
 ## Example Usage
 
+> [!NOTE]  
+> If you are auditing a **monorepo**, the action does not fully support it yet.
+
 > [!IMPORTANT]  
 > It is recommended to put this action after the build step in your workflow to
 > ensure that the code is built and ready for evaluation.
