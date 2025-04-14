@@ -5,6 +5,7 @@ import (
 	"math"
 	"os"
 
+	c "github.com/yonydev/frontend-audit-script/colorize"
 	"github.com/yonydev/frontend-audit-script/models"
 )
 
@@ -39,6 +40,7 @@ func CalculateScore(evaluations []models.Evaluation) map[string]float64 {
 	}
 
 	normalizedScore := calculateNewScaleValue(models.ScaleEvaluationValues{Value: generalScore, Min: minScore, Max: maxScore, NewScaleMin: 0, NewScaleMax: 10})
+	truncateNormalizedScore := math.Round(math.Max(float64(minScore), math.Min(float64(maxScore), float64(normalizedScore)))*100) / 100
 
 	githubEnvPath := os.Getenv("GITHUB_ENV")
 	if githubEnvPath != "" {
@@ -53,19 +55,18 @@ func CalculateScore(evaluations []models.Evaluation) map[string]float64 {
 		fmt.Println("⚠️ GITHUB_ENV is not set, skipping environment export.")
 	}
 
-	output := map[string]float64{
+	finalResult := map[string]float64{
 		"general":         generalScore,
 		"max":             maxScore,
 		"min":             minScore,
-		"normalizedScore": normalizedScore,
+		"normalizedScore": truncateNormalizedScore,
 	}
 
-	fmt.Println("This is the output of the evaluation: ", output)
+	fmt.Print("\n")
+	fmt.Println("This is the general score:", c.InfoFgBold(generalScore))
+	fmt.Println("This is the max score:", c.InfoFgBold(maxScore))
+	fmt.Println("This is the min score:", c.InfoFgBold(minScore))
+	fmt.Println("This is the normalized score:", c.InfoFgBold(truncateNormalizedScore))
 
-	return map[string]float64{
-		"general":         generalScore,
-		"max":             maxScore,
-		"min":             minScore,
-		"normalizedScore": normalizedScore,
-	}
+	return finalResult
 }
