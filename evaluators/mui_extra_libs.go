@@ -21,9 +21,9 @@ func EvalMuiExtraLibs(content *string) (models.Evaluation, error) {
 	evalDesc := "\nChecking for MUI extra libraries...\n"
 
 	score := 0
-	weight := 1
-	minScore := -3
-	maxScore := 3
+	weight := 3
+	minScore := -4
+	maxScore := 0
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
 		return models.Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
@@ -55,7 +55,7 @@ func EvalMuiExtraLibs(content *string) (models.Evaluation, error) {
 			c.SuccessFg("No MUI extra libraries found. Nice, keep it up! 🦾, keep it clean! 🧹"),
 		)
 	case 1:
-		score = -1
+		score = -2
 		messages = append(
 			messages,
 			fmt.Sprintf(

@@ -24,12 +24,11 @@ func EvalThemeProviders(paths []string) (models.Evaluation, error) {
 
 	evalName := ">>> Theme Provider Check"
 	evalDesc := "\nChecking for theme provider components in files...\n"
-	// initialScore := 3
+
 	score := 3
 	minScore := -2
 	maxScore := 3
 	weight := 2
-	// penaltyPoints := 0
 
 	type result struct {
 		path string
@@ -112,22 +111,15 @@ func EvalThemeProviders(paths []string) (models.Evaluation, error) {
 		}
 	}
 
-	// Scoring logic
 	switch numProviders {
 	case 1:
 		score = maxScore
-		// penaltyPoints += 30 // Multiple theme providers -> major penalty
 	case 2:
 		score = 1
 	default:
 		score = minScore
 	}
 
-	// if numFiles > 1 {
-	// 	penaltyPoints += (numFiles - 1) * 10 // Each extra file adds a penalty
-	// }
-
-	// score := max(initialScore-penaltyPoints, minScore)
 	evaluation := NewEvaluation(
 		evalName,
 		evalDesc,

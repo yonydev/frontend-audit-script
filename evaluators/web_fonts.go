@@ -22,7 +22,7 @@ func EvalWebFonts(paths []string) (models.Evaluation, error) {
 
 	score := 0
 	minScore := -3
-	maxScore := 2
+	maxScore := 4
 	weight := 4
 
 	filesWithWebFontsSet := make(map[string]struct{}) // Use a map to avoid duplicates

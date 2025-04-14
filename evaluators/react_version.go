@@ -89,12 +89,6 @@ func evaluateReactVersion(version int) models.Evaluation {
 			"Using React version %s. React version supported.",
 			c.InfoFgBold(version)),
 		)
-		// } else if version < 17 {
-		// 	score = 50
-		// 	evalMessages = append(evalMessages, fmt.Sprintf(
-		// 		"Using React version %s. Consider upgrading to version 17 or 18 for better performance and features.",
-		// 		c.InfoFgBold(version),
-		// 	))
 	} else {
 		score = -2
 		evalMessages = append(evalMessages, fmt.Sprintf(

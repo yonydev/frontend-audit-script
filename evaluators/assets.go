@@ -25,6 +25,11 @@ func EvalAssets(paths []string) (models.Evaluation, error) {
 	evalName := ">>> Assets Optimization Check"
 	evalDesc := "\nLooking for Checking for .jpg, .jpeg, .png, .gif, .svg, .webp files...\n"
 
+	score := 0
+	maxScore := 2
+	minScore := -2
+	weight := 4
+
 	if len(paths) == 0 {
 		messages = append(messages, "\nNo assets found in project.")
 	} else {
@@ -92,6 +97,7 @@ func EvalAssets(paths []string) (models.Evaluation, error) {
 	}
 
 	if len(criticalAssetsToOptimize) > 0 {
+		score = minScore
 		messages = append(messages, fmt.Sprintf(
 			"\nTotal of %s critical assets to optimize found with size greater than 1MB, consider optimizing them for better score:",
 			c.ErrorFgBold(len(criticalAssetsToOptimize)),
@@ -108,6 +114,7 @@ func EvalAssets(paths []string) (models.Evaluation, error) {
 	}
 
 	if len(moderateAssetsToOptimize) > 0 {
+		score = 0
 		messages = append(messages, fmt.Sprintf(
 			"\nTotal of %s moderate assets to optimize found with size between 200KB to 1MB",
 			c.WarningFgBold(len(moderateAssetsToOptimize)),
@@ -124,16 +131,17 @@ func EvalAssets(paths []string) (models.Evaluation, error) {
 	}
 
 	if len(criticalAssetsToOptimize) == 0 && len(moderateAssetsToOptimize) == 0 {
+		score = maxScore
 		messages = append(messages, c.SuccessFg("No assets found to optimize. Keep up the good work!"))
 	}
 
 	evaluation := NewEvaluation(
 		evalName,
 		evalDesc,
-		1,
-		2,
-		-2,
-		3,
+		score,
+		maxScore,
+		minScore,
+		weight,
 		messages,
 	)
 	writers.SetEvaluationEnvVariables(evaluation, utils.AssetsEnvVars)

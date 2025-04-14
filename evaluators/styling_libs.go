@@ -22,12 +22,10 @@ func EvalStylingLibs(content *string) (models.Evaluation, error) {
 	evalName := ">> Styling Libraries"
 	evalDesc := "\nChecking for common styling libraries...\n"
 
-	// initialScore := 3
-	score := 3
-	// penaltyPoints := 0
-	minScore := -2
-	maxScore := 3
-	weight := 2
+	score := 0
+	maxScore := 2
+	minScore := -3
+	weight := 3
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
 		return models.Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
@@ -50,7 +48,6 @@ func EvalStylingLibs(content *string) (models.Evaluation, error) {
 			foundStylingLibs = append(foundStylingLibs, lib)
 			if !allowed {
 				disallowedStylingLibs = append(disallowedStylingLibs, lib)
-				// penaltyPoints += 10
 			} else {
 				allowedStylingLibs = append(allowedStylingLibs, lib)
 			}
@@ -67,6 +64,13 @@ func EvalStylingLibs(content *string) (models.Evaluation, error) {
 		)
 	}
 
+	if len(allowedStylingLibs) > 0 {
+		messages = append(
+			messages,
+			c.SuccessFg(fmt.Sprintf("✅ %s are allowed and needed for '@clipmx/cods-ui'.\n", strings.Join(allowedStylingLibs, ", "))),
+		)
+	}
+
 	if len(disallowedStylingLibs) > 0 {
 		messages = append(
 			messages,
@@ -75,24 +79,11 @@ func EvalStylingLibs(content *string) (models.Evaluation, error) {
 	}
 
 	if len(allowedStylingLibs) == 2 {
-		// initialScore = maxScore
 		score = maxScore
 	} else if len(allowedStylingLibs) == 1 {
-		// initialScore = 1
 		score = 1
 	} else {
-		// initialScore = minScore
 		score = minScore
-	}
-
-	// Subtract penalty points from initial score
-	// score := max(initialScore-penaltyPoints, minScore)
-
-	if len(allowedStylingLibs) > 0 {
-		messages = append(
-			messages,
-			c.SuccessFg(fmt.Sprintf("✅ %s are allowed and needed for '@clipmx/cods-ui'.\n", strings.Join(allowedStylingLibs, ", "))),
-		)
 	}
 
 	evaluation := NewEvaluation(
