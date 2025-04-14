@@ -22,8 +22,8 @@ runs:
           const REACT_VERSION_EVAL_NAME = process.env.REACT_VERSION_EVAL_NAME
           const REACT_VERSION_SCORE = process.env.REACT_VERSION_SCORE
           const REACT_VERSION_MAX_SCORE = process.env.REACT_VERSION_MAX_SCORE
-          const REACT_VERSION_MIX_SCORE = process.env.REACT_VERSION_MIX_SCORE
-          const REACT_VERSION_WEIGT = process.env.REACT_VERSION_WEIGT
+          const REACT_VERSION_MIN_SCORE = process.env.REACT_VERSION_MIN_SCORE
+          const REACT_VERSION_WEIGHT = process.env.REACT_VERSION_WEIGHT
 
           const ICON_LIBS_EVAL_NAME = process.env.ICON_LIBS_EVAL_NAME
           const ICON_LIBS_SCORE = process.env.ICON_LIBS_SCORE
@@ -64,17 +64,17 @@ runs:
           const EVALUATION_TOTAL_SCORE = process.env.EVALUATION_TOTAL_SCORE
 
           const table = `
-            | Evaluation Name 🧪           | Min / Max Score 📈                                          | Score 💯                      | Weight ⚖️                 |
-            |------------------------------|-------------------------------------------------------------|-------------------------------|---------------------------|
-            | ${REACT_VERSION_EVAL_NAME}   | ${REACT_VERSION_MIN_SCORE} / ${REACT_VERSION_MAX_SCORE}     | ${REACT_VERSION_SCORE}        | ${REACT_VERSION_WEIGHT}   |
-            | ${ICON_LIBS_EVAL_NAME}       | ${ICON_LIBS_MIN_SCORE} / ${ICON_LIBS_MAX_SCORE}             | ${ICON_LIBS_SCORE}            | ${ICON_LIBS_WEIGHT}       |
-            | ${MUI_EXTRA_LIBS_EVAL_NAME}  | ${MUI_EXTRA_LIBS_MIN_SCORE} / ${MUI_EXTRA_LIBS_MAX_SCORE}   | ${MUI_EXTRA_LIBS_SCORE}       | ${MUI_EXTRA_LIBS_WEIGHT}  |
-            | ${STYLING_LIBS_EVAL_NAME}    | ${STYLING_LIBS_MIN_SCORE} / ${STYLING_LIBS_MAX_SCORE}       | ${STYLING_LIBS_SCORE}         | ${STYLING_LIBS_WEIGHT}    |
-            | ${THEME_PROVIDERS_EVAL_NAME} | ${THEME_PROVIDERS_MIN_SCORE} / ${THEME_PROVIDERS_MAX_SCORE} | ${THEME_PROVIDERS_SCORE}      | ${THEME_PROVIDERS_WEIGHT} |
-            | ${WEB_FONTS_EVAL_NAME}       | ${WEB_FONTS_MIN_SCORE} / ${WEB_FONTS_MAX_SCORE}             | ${WEB_FONTS_SCORE}            | ${WEB_FONTS_WEIGHT}       |
-            | ${ASSETS_EVAL_NAME}          | ${ASSETS_MIN_SCORE} / ${ASSETS_MAX_SCORE}                   | ${ASSETS_SCORE}               | ${ASSETS_WEIGHT}          |
-            |                              |                                                             |                               |                           |
-            | ⭐**Total Score**             |                                                             | **${EVALUATION_TOTAL_SCORE}** |                           |
+            | Evaluation Name 🧪           | Min / Max Score 📈                                          | Score 💯                           | Weight ⚖️                 |
+            |------------------------------|-------------------------------------------------------------|------------------------------------|---------------------------|
+            | ${REACT_VERSION_EVAL_NAME}   | ${REACT_VERSION_MIN_SCORE} / ${REACT_VERSION_MAX_SCORE}     | ${REACT_VERSION_SCORE}             | ${REACT_VERSION_WEIGHT}   |
+            | ${ICON_LIBS_EVAL_NAME}       | ${ICON_LIBS_MIN_SCORE} / ${ICON_LIBS_MAX_SCORE}             | ${ICON_LIBS_SCORE}                 | ${ICON_LIBS_WEIGHT}       |
+            | ${MUI_EXTRA_LIBS_EVAL_NAME}  | ${MUI_EXTRA_LIBS_MIN_SCORE} / ${MUI_EXTRA_LIBS_MAX_SCORE}   | ${MUI_EXTRA_LIBS_SCORE}            | ${MUI_EXTRA_LIBS_WEIGHT}  |
+            | ${STYLING_LIBS_EVAL_NAME}    | ${STYLING_LIBS_MIN_SCORE} / ${STYLING_LIBS_MAX_SCORE}       | ${STYLING_LIBS_SCORE}              | ${STYLING_LIBS_WEIGHT}    |
+            | ${THEME_PROVIDERS_EVAL_NAME} | ${THEME_PROVIDERS_MIN_SCORE} / ${THEME_PROVIDERS_MAX_SCORE} | ${THEME_PROVIDERS_SCORE}           | ${THEME_PROVIDERS_WEIGHT} |
+            | ${WEB_FONTS_EVAL_NAME}       | ${WEB_FONTS_MIN_SCORE} / ${WEB_FONTS_MAX_SCORE}             | ${WEB_FONTS_SCORE}                 | ${WEB_FONTS_WEIGHT}       |
+            | ${ASSETS_EVAL_NAME}          | ${ASSETS_MIN_SCORE} / ${ASSETS_MAX_SCORE}                   | ${ASSETS_SCORE}                    | ${ASSETS_WEIGHT}          |
+            |                              |                                                             |                                    |                           |
+            | ⭐**Total Score**             |                                                             | **${EVALUATION_TOTAL_SCORE} / 10** |                           |
 
             ${uniqueIdentifier} <!-- Hidden identifier -->
           `;

@@ -47,7 +47,7 @@ func CalculateScore(evaluations []models.Evaluation) map[string]float64 {
 		file, err := os.OpenFile(githubEnvPath, os.O_APPEND|os.O_WRONLY, 0644)
 		if err == nil {
 			defer file.Close()
-			_, _ = fmt.Fprintf(file, "EVALUATION_TOTAL_SCORE=%.2f\n", normalizedScore)
+			_, _ = fmt.Fprintf(file, "EVALUATION_TOTAL_SCORE=%.2f\n", truncateNormalizedScore)
 		} else {
 			fmt.Printf("⚠️ Failed to write to GITHUB_ENV: %v\n", err)
 		}
