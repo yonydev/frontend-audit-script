@@ -1,4 +1,4 @@
-package evaluators
+package models
 
 type Evaluation struct {
 	Name        string
@@ -6,5 +6,6 @@ type Evaluation struct {
 	Score       int
 	MaxScore    int
 	MinScore    int
+	Weight      int
 	Messages    []string
 }

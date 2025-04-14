@@ -6,21 +6,27 @@ import (
 	"maps"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/utils"
+	"github.com/yonydev/frontend-audit-script/writers"
 )
 
-func EvalIconLibs(content *string) (Evaluation, error) {
+func EvalIconLibs(content *string) (models.Evaluation, error) {
 	var packageJSON map[string]any
 	var foundIconsLibs []string
 	var evalMessages []string
 
-	evalName := "\n>>> Icon Libraries\n"
-	evalDesc := "Checking for common icon libraries...\n"
+	evalName := ">>> Icon Libraries"
+	evalDesc := "\nChecking for common icon libraries...\n"
 	foundLibsCount := 0
-	score := 100
+
+	score := 0
+	weight := 3
+	maxScore := 0
+	minScore := -3
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
-		return Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
+		return models.Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
 	}
 
 	dependencies, foundDeps := packageJSON["dependencies"].(map[string]any)
@@ -32,9 +38,10 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 		return NewEvaluation(
 				evalName,
 				evalDesc,
-				0,
-				100,
-				0,
+				score,
+				maxScore,
+				minScore,
+				weight,
 				[]string{"No dependencies nor devDependencies found in package.json"}),
 			nil
 	}
@@ -54,13 +61,19 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 			c.WarningFg("No icon library found. Consider adding one for consistent icon usage.\n"),
 		)
 	case 1:
-		score = 100
+		score = 0
 		evalMessages = append(evalMessages, fmt.Sprintf(
 			"Using a single icon library: %s, which is ideal.\n",
 			c.InfoFgBold(foundIconsLibs[0])),
 		)
+	case 2:
+		score = -2
+		evalMessages = append(evalMessages, fmt.Sprintf(
+			"Using: %s, please just use 1 for better performance.\n",
+			c.InfoFgBold(foundIconsLibs)),
+		)
 	default:
-		score = 50
+		score = minScore
 		evalMessages = append(
 			evalMessages,
 			fmt.Sprintf(
@@ -73,5 +86,16 @@ func EvalIconLibs(content *string) (Evaluation, error) {
 		}
 	}
 
-	return NewEvaluation(evalName, evalDesc, score, 0, 0, evalMessages), nil
+	evaluation := NewEvaluation(
+		evalName,
+		evalDesc,
+		score,
+		maxScore,
+		minScore,
+		weight,
+		evalMessages,
+	)
+	writers.SetEvaluationEnvVariables(evaluation, utils.IconLibsEnvVars)
+
+	return evaluation, nil
 }

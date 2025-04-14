@@ -7,19 +7,26 @@ import (
 	"strings"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/utils"
+	"github.com/yonydev/frontend-audit-script/writers"
 )
 
-func EvalMuiExtraLibs(content *string) (Evaluation, error) {
+func EvalMuiExtraLibs(content *string) (models.Evaluation, error) {
 	var packageJSON map[string]any
 	var messages []string
 	var foundLibs []string
 
-	evalName := "\n>>> MUI Extra Libraries\n"
-	evalDesc := "Checking for MUI extra libraries...\n"
+	evalName := ">>> MUI Extra Libraries"
+	evalDesc := "\nChecking for MUI extra libraries...\n"
+
+	score := 0
+	weight := 3
+	minScore := -4
+	maxScore := 0
 
 	if err := json.Unmarshal([]byte(*content), &packageJSON); err != nil {
-		return Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
+		return models.Evaluation{}, fmt.Errorf("failed to parse package.json: %v", err)
 	}
 
 	dependencies, foundDeps := packageJSON["dependencies"].(map[string]any)
@@ -40,12 +47,24 @@ func EvalMuiExtraLibs(content *string) (Evaluation, error) {
 		}
 	}
 
-	if len(foundLibs) == 0 {
+	switch len(foundLibs) {
+	case 0:
+		score = maxScore
 		messages = append(
 			messages,
 			c.SuccessFg("No MUI extra libraries found. Nice, keep it up! 🦾, keep it clean! 🧹"),
 		)
-	} else {
+	case 1:
+		score = -2
+		messages = append(
+			messages,
+			fmt.Sprintf(
+				"Found %s in package.json.\n",
+				c.InfoFgBold(strings.Join(foundLibs, ", ")),
+			),
+		)
+	default:
+		score = minScore
 		messages = append(
 			messages,
 			fmt.Sprintf(
@@ -55,13 +74,16 @@ func EvalMuiExtraLibs(content *string) (Evaluation, error) {
 		)
 	}
 
-	return NewEvaluation(
-			evalName,
-			evalDesc,
-			0,
-			0,
-			0,
-			messages,
-		),
-		nil
+	evaluation := NewEvaluation(
+		evalName,
+		evalDesc,
+		score,
+		maxScore,
+		minScore,
+		weight,
+		messages,
+	)
+	writers.SetEvaluationEnvVariables(evaluation, utils.MuiExtraLibsEnvVars)
+
+	return evaluation, nil
 }

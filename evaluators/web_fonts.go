@@ -9,14 +9,21 @@ import (
 	"sync"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/utils"
+	"github.com/yonydev/frontend-audit-script/writers"
 )
 
-func EvalWebFonts(paths []string) (Evaluation, error) {
+func EvalWebFonts(paths []string) (models.Evaluation, error) {
 	var messages []string
 	var mu sync.Mutex
 	var webFonts []string
 	var filesWithWebFonts []string
+
+	score := 0
+	minScore := -3
+	maxScore := 4
+	weight := 4
 
 	filesWithWebFontsSet := make(map[string]struct{}) // Use a map to avoid duplicates
 	webFontsSet := make(map[string]struct{})          // Use a map to avoid duplicates
@@ -25,8 +32,8 @@ func EvalWebFonts(paths []string) (Evaluation, error) {
 	googleFontsImportsRegex := regexp.MustCompile(`https://fonts.googleapis.com/css\?family=([^&"']+)`)
 	googleFontsLinksRegex := regexp.MustCompile(`<link[^>]+href=["']https://fonts.googleapis.com/css\?family=([^:"'&,]+)`)
 
-	evalName := "\n>>> Web Fonts Check\n"
-	evalDesc := "Checking for web fonts in .css, .scss, .sass files...\n"
+	evalName := ">>> Web Fonts Check"
+	evalDesc := "\nChecking for web fonts in .css, .scss, .sass files...\n"
 
 	type result struct {
 		path string
@@ -96,7 +103,7 @@ func EvalWebFonts(paths []string) (Evaluation, error) {
 
 	for res := range results {
 		if res.err != nil {
-			return Evaluation{}, res.err
+			return models.Evaluation{}, res.err
 		}
 	}
 
@@ -109,12 +116,21 @@ func EvalWebFonts(paths []string) (Evaluation, error) {
 		filesWithWebFonts = append(filesWithWebFonts, file)
 	}
 
-	if len(webFontsSet) == 0 {
+	switch len(webFontsSet) {
+	case 0:
+		score = 0
 		messages = append(
 			messages,
 			c.WarningFg("No web fonts found in the project. Consider using system fonts or generic font families."),
 		)
-	} else {
+	case 1:
+		score = maxScore
+		messages = append(
+			messages,
+			c.SuccessFg("Only one web font found in the project. Nice!"),
+		)
+	default:
+		score = minScore
 		messages = append(
 			messages,
 			fmt.Sprintf("Total of %s fonts used in %s files", c.InfoFgBold(len(webFontsSet)), c.InfoFgBold(len(filesWithWebFontsSet))),
@@ -125,13 +141,16 @@ func EvalWebFonts(paths []string) (Evaluation, error) {
 		}
 	}
 
-	return NewEvaluation(
-			evalName,
-			evalDesc,
-			0,
-			0,
-			0,
-			messages,
-		),
-		nil
+	evaluation := NewEvaluation(
+		evalName,
+		evalDesc,
+		score,
+		maxScore,
+		minScore,
+		weight,
+		messages,
+	)
+	writers.SetEvaluationEnvVariables(evaluation, utils.WebFontsEnvVars)
+
+	return evaluation, nil
 }

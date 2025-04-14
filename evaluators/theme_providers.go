@@ -5,18 +5,30 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strings"
 	"sync"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
+	"github.com/yonydev/frontend-audit-script/utils"
+	"github.com/yonydev/frontend-audit-script/writers"
 )
 
-func EvalThemeProviders(paths []string) (Evaluation, error) {
+func EvalThemeProviders(paths []string) (models.Evaluation, error) {
 	var filesUsingThemeProvider []string
+	var themeProvidersNames []string
 	var messages []string
+
+	uniqueProviders := make(map[string]struct{})
 	tagPattern := regexp.MustCompile(`<(ThemeProvider|ThemeProviders|MuiThemeProvider|UIThemeProvider)\b[^>]*?>`)
 
-	evalName := ">>> Theme Provider Check\n"
-	evalDesc := "Checking for theme provider components in files...\n"
+	evalName := ">>> Theme Provider Check"
+	evalDesc := "\nChecking for theme provider components in files...\n"
+
+	score := 3
+	minScore := -2
+	maxScore := 3
+	weight := 2
 
 	type result struct {
 		path string
@@ -48,8 +60,10 @@ func EvalThemeProviders(paths []string) (Evaluation, error) {
 
 			for scanner.Scan() {
 				line := scanner.Text()
-				if tagPattern.MatchString(line) {
+				matches := tagPattern.FindStringSubmatch(line)
+				if len(matches) > 1 {
 					filesUsingThemeProvider = append(filesUsingThemeProvider, path)
+					uniqueProviders[matches[1]] = struct{}{}
 					break
 				}
 			}
@@ -70,11 +84,18 @@ func EvalThemeProviders(paths []string) (Evaluation, error) {
 
 	for res := range results {
 		if res.err != nil {
-			return Evaluation{}, res.err
+			return models.Evaluation{}, res.err
 		}
 	}
 
-	if len(filesUsingThemeProvider) == 0 {
+	for themeName := range uniqueProviders {
+		themeProvidersNames = append(themeProvidersNames, themeName)
+	}
+
+	numProviders := len(uniqueProviders)
+	numFiles := len(filesUsingThemeProvider)
+
+	if numProviders == 0 {
 		messages = append(
 			messages,
 			"\nNo ThemeProvider found in any of the .js(x) or .ts(x) files. Consider using a theme provider for consistent theme usage.",
@@ -82,23 +103,34 @@ func EvalThemeProviders(paths []string) (Evaluation, error) {
 	} else {
 		messages = append(
 			messages,
-			fmt.Sprintf(
-				"\nTotal of %s files found theme provider components in the following files:",
-				c.InfoFgBold(len(filesUsingThemeProvider)),
-			),
+			fmt.Sprintf("Using: %s", c.InfoFgBold(strings.Join(themeProvidersNames, ", "))),
+			fmt.Sprintf("\nTotal of %s files found with theme provider components:", c.InfoFgBold(numFiles)),
 		)
 		for _, file := range filesUsingThemeProvider {
 			messages = append(messages, fmt.Sprintf("file: %s", c.WarningFg(file)))
 		}
 	}
 
-	return NewEvaluation(
-			evalName,
-			evalDesc,
-			0,
-			0,
-			0,
-			messages,
-		),
-		nil
+	switch numProviders {
+	case 1:
+		score = maxScore
+	case 2:
+		score = 1
+	default:
+		score = minScore
+	}
+
+	evaluation := NewEvaluation(
+		evalName,
+		evalDesc,
+		score,
+		maxScore,
+		minScore,
+		weight,
+		messages,
+	)
+
+	writers.SetEvaluationEnvVariables(evaluation, utils.ThemeProvidersEnvVars)
+
+	return evaluation, nil
 }

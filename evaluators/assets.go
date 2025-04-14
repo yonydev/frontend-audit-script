@@ -12,16 +12,23 @@ import (
 	_ "golang.org/x/image/webp"
 
 	c "github.com/yonydev/frontend-audit-script/colorize"
+	"github.com/yonydev/frontend-audit-script/models"
 	"github.com/yonydev/frontend-audit-script/utils"
+	"github.com/yonydev/frontend-audit-script/writers"
 )
 
-func EvalAssets(paths []string) (Evaluation, error) {
+func EvalAssets(paths []string) (models.Evaluation, error) {
 	var moderateAssetsToOptimize []string
 	var criticalAssetsToOptimize []string
 	var messages []string
 
-	evalName := "\n>>> Assets Optimization Check\n"
-	evalDesc := "Looking for Checking for .jpg, .jpeg, .png, .gif, .svg, .webp files..."
+	evalName := ">>> Assets Optimization Check"
+	evalDesc := "\nLooking for Checking for .jpg, .jpeg, .png, .gif, .svg, .webp files...\n"
+
+	score := 0
+	maxScore := 2
+	minScore := -2
+	weight := 4
 
 	if len(paths) == 0 {
 		messages = append(messages, "\nNo assets found in project.")
@@ -90,6 +97,7 @@ func EvalAssets(paths []string) (Evaluation, error) {
 	}
 
 	if len(criticalAssetsToOptimize) > 0 {
+		score = minScore
 		messages = append(messages, fmt.Sprintf(
 			"\nTotal of %s critical assets to optimize found with size greater than 1MB, consider optimizing them for better score:",
 			c.ErrorFgBold(len(criticalAssetsToOptimize)),
@@ -106,6 +114,7 @@ func EvalAssets(paths []string) (Evaluation, error) {
 	}
 
 	if len(moderateAssetsToOptimize) > 0 {
+		score = 0
 		messages = append(messages, fmt.Sprintf(
 			"\nTotal of %s moderate assets to optimize found with size between 200KB to 1MB",
 			c.WarningFgBold(len(moderateAssetsToOptimize)),
@@ -122,16 +131,20 @@ func EvalAssets(paths []string) (Evaluation, error) {
 	}
 
 	if len(criticalAssetsToOptimize) == 0 && len(moderateAssetsToOptimize) == 0 {
+		score = maxScore
 		messages = append(messages, c.SuccessFg("No assets found to optimize. Keep up the good work!"))
 	}
 
-	return NewEvaluation(
-			evalName,
-			evalDesc,
-			0,
-			0,
-			0,
-			messages,
-		),
-		nil
+	evaluation := NewEvaluation(
+		evalName,
+		evalDesc,
+		score,
+		maxScore,
+		minScore,
+		weight,
+		messages,
+	)
+	writers.SetEvaluationEnvVariables(evaluation, utils.AssetsEnvVars)
+
+	return evaluation, nil
 }
