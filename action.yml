@@ -76,7 +76,7 @@ runs:
             |                              |                                                             |                                    |                           |
             | ⭐**Total Score**             |                                                             | **${EVALUATION_TOTAL_SCORE} / 10** |                           |
 
-            If you want to know more about how this score is calculated to the actions documentation [here].(https://github.com/yonydev/frontend-audit-script/tree/develop)
+            If you want to know more about how this score is calculated to the actions documentation [here].(https://github.com/yonydev/frontend-audit-script)
 
             ${uniqueIdentifier} <!-- Hidden identifier -->
           `;
