@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Frontend Audit Script
-        uses: yonatanrojas/frontendauditscript@latest
+        uses: yonatanrojas/frontendauditscript@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
