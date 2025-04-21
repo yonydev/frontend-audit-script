@@ -12,5 +12,3 @@ RUN go build -o /bin/action
 
 # Specify the container's entrypoint as the action
 ENTRYPOINT ["/bin/action"]
-
-RUN env
