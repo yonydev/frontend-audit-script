@@ -2,6 +2,187 @@ name: Post PR Audit Comment
 
 on:
   workflow_call:
+    inputs:
+      react_version_eval_name:
+        type: string
+        required: true
+        description: React version evaluation name needed to post the PR Comment
+
+      react_version_score:
+        type: string
+        required: true
+        description: React version score needed to post the PR Comment
+
+      react_version_max_score:
+        type: string
+        required: true
+        description: React version maximum score needed to post the PR Comment
+
+      react_version_min_score:
+        type: string
+        required: true
+        description: React version minimum score needed to post the PR Comment
+
+      react_version_weight:
+        type: string
+        required: true
+        description: React version weight needed to post the PR Comment
+
+      icon_libs_eval_name:
+        type: string
+        required: true
+        description: Icon libraries evaluation name needed to post the PR Comment
+
+      icon_libs_score:
+        type: string
+        required: true
+        description: Icon libraries score needed to post the PR Comment
+
+      icon_libs_max_score:
+        type: string
+        required: true
+        description: Icon libraries maximum score needed to post the PR Comment
+
+      icon_libs_min_score:
+        type: string
+        required: true
+        description: Icon libraries minimum score needed to post the PR Comment
+
+      icon_libs_weight:
+        type: string
+        required: true
+        description: Icon libraries weight needed to post the PR Comment
+
+      mui_extra_libs_eval_name:
+        type: string
+        required: true
+        description: MUI extra libraries evaluation name needed to post the PR Comment
+
+      mui_extra_libs_score:
+        type: string
+        required: true
+        description: MUI extra libraries score needed to post the PR Comment
+
+      mui_extra_libs_max_score:
+        type: string
+        required: true
+        description: MUI extra libraries maximum score needed to post the PR Comment
+
+      mui_extra_libs_min_score:
+        type: string
+        required: true
+        description: MUI extra libraries minimum score needed to post the PR Comment
+
+      mui_extra_libs_weight:
+        type: string
+        required: true
+        description: MUI extra libraries weight needed to post the PR Comment
+
+      styling_libs_eval_name:
+        type: string
+        required: true
+        description: Styling libraries evaluation name needed to post the PR Comment
+
+      styling_libs_score:
+        type: string
+        required: true
+        description: Styling libraries score needed to post the PR Comment
+
+      styling_libs_max_score:
+        type: string
+        required: true
+        description: Styling libraries maximum score needed to post the PR Comment
+
+      styling_libs_min_score:
+        type: string
+        required: true
+        description: Styling libraries minimum score needed to post the PR Comment
+
+      styling_libs_weight:
+        type: string
+        required: true
+        description: Styling libraries weight needed to post the PR Comment
+
+      theme_providers_eval_name:
+        type: string
+        required: true
+        description: Theme providers evaluation name needed to post the PR Comment
+
+      theme_providers_score:
+        type: string
+        required: true
+        description: Theme providers score needed to post the PR Comment
+
+      theme_providers_max_score:
+        type: string
+        required: true
+        description: Theme providers maximum score needed to post the PR Comment
+
+      theme_providers_min_score:
+        type: string
+        required: true
+        description: Theme providers minimum score needed to post the PR Comment
+
+      theme_providers_weight:
+        type: string
+        required: true
+        description: Theme providers weight needed to post the PR Comment
+
+      web_fonts_eval_name:
+        type: string
+        required: true
+        description: Web fonts evaluation name needed to post the PR Comment
+
+      web_fonts_score:
+        type: string
+        required: true
+        description: Web fonts score needed to post the PR Comment
+
+      web_fonts_max_score:
+        type: string
+        required: true
+        description: Web fonts maximum score needed to post the PR Comment
+
+      web_fonts_min_score:
+        type: string
+        required: true
+        description: Web fonts minimum score needed to post the PR Comment
+
+      web_fonts_weight:
+        type: string
+        required: true
+        description: Web fonts weight needed to post the PR Comment
+
+      assets_eval_name:
+        type: string
+        required: true
+        description: Assets evaluation name needed to post the PR Comment
+
+      assets_score:
+        type: string
+        required: true
+        description: Assets score needed to post the PR Comment
+
+      assets_max_score:
+        type: string
+        required: true
+        description: Assets maximum score needed to post the PR Comment
+
+      assets_min_score:
+        type: string
+        required: true
+        description: Assets minimum score needed to post the PR Comment
+
+      assets_weight:
+        type: string
+        required: true
+        description: Assets weight needed to post the PR Comment
+
+      evaluation_total_score:
+        type: string
+        required: true
+        description: Evaluation total score needed to post the PR Comment
+
     secrets:
       github-token:
         required: true
@@ -11,7 +192,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print env from Go actions
-        run: env
+        run: echo "OUTPUT ${{ inputs.evaluation_total_score }}"
       - name: Post PR Comment
         uses: actions/github-script@v6
         with:
@@ -104,3 +285,47 @@ jobs:
                   body: table
                 });
               }
+        env:
+          REACT_VERSION_EVAL_NAME: ${{ inputs.react_version_eval_name }}
+          REACT_VERSION_SCORE: ${{ inputs.react_version_score }}
+          REACT_VERSION_MAX_SCORE: ${{ inputs.react_version_max_score }}
+          REACT_VERSION_MIN_SCORE: ${{ inputs.react_version_min_score }}
+          REACT_VERSION_WEIGHT: ${{ inputs.react_version_weight }}
+
+          ICON_LIBS_EVAL_NAME: ${{ inputs.icon_libs_eval_name }}
+          ICON_LIBS_SCORE: ${{ inputs.icon_libs_score }}
+          ICON_LIBS_MAX_SCORE: ${{ inputs.icon_libs_max_score }}
+          ICON_LIBS_MIN_SCORE: ${{ inputs.icon_libs_min_score }}
+          ICON_LIBS_WEIGHT: ${{ inputs.icon_libs_weight }}
+
+          MUI_EXTRA_LIBS_EVAL_NAME: ${{ inputs.mui_extra_libs_eval_name }}
+          MUI_EXTRA_LIBS_SCORE: ${{ inputs.mui_extra_libs_score }}
+          MUI_EXTRA_LIBS_MAX_SCORE: ${{ inputs.mui_extra_libs_max_score }}
+          MUI_EXTRA_LIBS_MIN_SCORE: ${{ inputs.mui_extra_libs_min_score }}
+          MUI_EXTRA_LIBS_WEIGHT: ${{ inputs.mui_extra_libs_weight }}
+
+          STYLING_LIBS_EVAL_NAME: ${{ inputs.styling_libs_eval_name }}
+          STYLING_LIBS_SCORE: ${{ inputs.styling_libs_score }}
+          STYLING_LIBS_MAX_SCORE: ${{ inputs.styling_libs_max_score }}
+          STYLING_LIBS_MIN_SCORE: ${{ inputs.styling_libs_min_score }}
+          STYLING_LIBS_WEIGHT: ${{ inputs.styling_libs_weight }}
+
+          THEME_PROVIDERS_EVAL_NAME: ${{ inputs.theme_providers_eval_name }}
+          THEME_PROVIDERS_SCORE: ${{ inputs.theme_providers_score }}
+          THEME_PROVIDERS_MAX_SCORE: ${{ inputs.theme_providers_max_score }}
+          THEME_PROVIDERS_MIN_SCORE: ${{ inputs.theme_providers_min_score }}
+          THEME_PROVIDERS_WEIGHT: ${{ inputs.theme_providers_weight }}
+
+          WEB_FONTS_EVAL_NAME: ${{ inputs.web_fonts_eval_name }}
+          WEB_FONTS_SCORE: ${{ inputs.web_fonts_score }}
+          WEB_FONTS_MAX_SCORE: ${{ inputs.web_fonts_max_score }}
+          WEB_FONTS_MIN_SCORE: ${{ inputs.web_fonts_min_score }}
+          WEB_FONTS_WEIGHT: ${{ inputs.web_fonts_weight }}
+
+          ASSETS_EVAL_NAME: ${{ inputs.assets_eval_name }}
+          ASSETS_SCORE: ${{ inputs.assets_score }}
+          ASSETS_MAX_SCORE: ${{ inputs.assets_max_score }}
+          ASSETS_MIN_SCORE: ${{ inputs.assets_min_score }}
+          ASSETS_WEIGHT: ${{ inputs.assets_weight }}
+
+          EVALUATION_TOTAL_SCORE: ${{ inputs.evaluation_total_score }}

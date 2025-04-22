@@ -17,12 +17,12 @@ func SetEvaluationEnvVariables(evaluation models.Evaluation, envVars map[string]
 		"Weight":   strconv.Itoa(evaluation.Weight),
 	}
 
-	githubEnvPath := os.Getenv("GITHUB_ENV")
+	githubOutputPath := os.Getenv("GITHUB_OUTPUT")
 	var file *os.File
 	var err error
 
-	if githubEnvPath != "" {
-		file, err = os.OpenFile(githubEnvPath, os.O_APPEND|os.O_WRONLY, 0644)
+	if githubOutputPath != "" {
+		file, err = os.OpenFile(githubOutputPath, os.O_APPEND|os.O_WRONLY, 0644)
 		if err != nil {
 			fmt.Printf("❌ Error opening GITHUB_ENV file: %v\n", err)
 			file = nil
@@ -35,14 +35,10 @@ func SetEvaluationEnvVariables(evaluation models.Evaluation, envVars map[string]
 			if err != nil {
 				fmt.Printf("⚠️ Error setting %s: %v\n", envKey, err)
 			}
-			// } else {
-			// 	fmt.Printf("✅ Set %s=%s\n", envKey, value)
-			// }
-			// Write to GITHUB_ENV (if available)
 			if file != nil {
 				_, err := file.WriteString(fmt.Sprintf("%s=%s\n", envKey, value))
 				if err != nil {
-					fmt.Printf("⚠️ Error writing %s to GITHUB_ENV: %v\n", envKey, err)
+					fmt.Printf("⚠️ Error writing %s to GITHUB_OUTPUT: %v\n", envKey, err)
 				}
 			}
 		} else {

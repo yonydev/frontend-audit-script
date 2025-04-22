@@ -42,7 +42,7 @@ func CalculateScore(evaluations []models.Evaluation) map[string]float64 {
 	normalizedScore := calculateNewScaleValue(models.ScaleEvaluationValues{Value: generalScore, Min: minScore, Max: maxScore, NewScaleMin: 0, NewScaleMax: 10})
 	truncateNormalizedScore := math.Round(math.Max(float64(minScore), math.Min(float64(maxScore), float64(normalizedScore)))*100) / 100
 
-	githubEnvPath := os.Getenv("GITHUB_ENV")
+	githubEnvPath := os.Getenv("GITHUB_OUTPUT")
 	if githubEnvPath != "" {
 		file, err := os.OpenFile(githubEnvPath, os.O_APPEND|os.O_WRONLY, 0644)
 		if err == nil {
