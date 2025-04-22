@@ -10,7 +10,8 @@ runs:
   using: composite
   steps:
     - name: Run Go Audit Scrip
-      uses: docker://yonatanrojas/frontendauditscript:latest
+      # uses: docker://yonatanrojas/frontendauditscript:latest
+      uses: ./.github/actions/go-audit-script/action.yml
 
     - name: Post PR Comment
       uses: actions/github-script@v6
