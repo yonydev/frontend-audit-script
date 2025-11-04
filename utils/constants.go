@@ -30,6 +30,7 @@ var CommonIconLibs = []string{
 	"@heroicons/react",
 	"@tabler/icons-react",
 	"@material-ui/icons",
+	"@mui/icons-material",
 	"@iconify/react",
 	"@clipmx/cods-icons",
 	"@clipmx/clip-icons",
